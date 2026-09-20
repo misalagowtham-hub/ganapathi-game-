@@ -26,20 +26,10 @@ body {
 
 #scene {
     position: relative;
-
     width: 100%;
     aspect-ratio: 1821 / 864;
 
-    /*
-       IMPORTANT:
-       The game background remains the actual
-       festival-game-bg.png image.
-
-       game.js changes this background image
-       itself when distance reaches 500 m.
-    */
     background-image: url("festival-game-bg.png");
-
     background-size: 100% 100%;
     background-position: center;
     background-repeat: no-repeat;
@@ -54,7 +44,6 @@ body {
 
 /* =====================================================
    BACKGROUND COVER
-   Hides the TWO BAKED-IN MUSHAKS.
 ===================================================== */
 
 #scene::before {
@@ -73,19 +62,13 @@ body {
     background:
         linear-gradient(
             to bottom,
-
             #91472a 0%,
             #91472a 70%,
-
             #e5bd38 70%,
             #e5bd38 74%,
-
             #555a61 74%,
             #555a61 100%
         );
-
-    border-radius: 0;
-    box-shadow: none;
 
     pointer-events: none;
 }
@@ -98,11 +81,8 @@ body {
 #world {
     position: absolute;
     inset: 0;
-
     overflow: hidden;
-
     pointer-events: none;
-
     z-index: 20;
 }
 
@@ -121,14 +101,11 @@ body {
     height: 13.5%;
 
     display: flex;
-
     align-items: flex-end;
     justify-content: center;
 
     z-index: 30;
-
     will-change: transform;
-
     overflow: visible;
 }
 
@@ -137,9 +114,7 @@ body {
     height: 100%;
 
     object-fit: contain;
-
     display: block;
-
     pointer-events: none;
 }
 
@@ -153,7 +128,6 @@ body {
     inset: 0;
 
     overflow: hidden;
-
     pointer-events: none;
 }
 
@@ -161,12 +135,10 @@ body {
     position: absolute;
 
     display: flex;
-
     align-items: center;
     justify-content: center;
 
     pointer-events: none;
-
     z-index: 25;
 
     will-change: left, bottom;
@@ -216,18 +188,16 @@ body {
 
 
 /* =====================================================
-   HUD NUMBERS
+   HUD
 ===================================================== */
 
 .liveValue {
     position: absolute;
-
     z-index: 40;
 
     color: #6d2a0b;
 
     font-weight: 1000;
-
     line-height: 1;
 
     text-align: center;
@@ -236,17 +206,12 @@ body {
         0 1px 0 #fff8df;
 
     pointer-events: none;
-
     white-space: nowrap;
 }
-
-
-/* DISTANCE */
 
 .distanceValue {
     left: 34.8%;
     top: 27.0%;
-
     width: 7.0%;
 
     font-size: clamp(
@@ -255,14 +220,10 @@ body {
         19px
     );
 }
-
-
-/* SCORE */
 
 .scoreValue {
     left: 47.6%;
     top: 27.0%;
-
     width: 7.0%;
 
     font-size: clamp(
@@ -271,14 +232,10 @@ body {
         19px
     );
 }
-
-
-/* COMBO */
 
 .comboValue {
     left: 60.9%;
     top: 27.0%;
-
     width: 7.0%;
 
     font-size: clamp(
@@ -288,13 +245,9 @@ body {
     );
 }
 
-
-/* LIVES */
-
 .livesValue {
     left: 73.6%;
     top: 26.7%;
-
     width: 8.5%;
 
     font-size: clamp(
@@ -302,17 +255,11 @@ body {
         0.82vw,
         17px
     );
-
-    letter-spacing: 0;
 }
-
-
-/* SPEED */
 
 .speedValue {
     left: 86.8%;
     top: 27.0%;
-
     width: 7.5%;
 
     font-size: clamp(
@@ -324,12 +271,11 @@ body {
 
 
 /* =====================================================
-   MISSION NUMBER
+   MISSION
 ===================================================== */
 
 #missionValue {
     position: absolute;
-
     z-index: 40;
 
     left: 25.3%;
@@ -346,11 +292,9 @@ body {
     );
 
     font-weight: 1000;
-
     text-align: center;
 
     white-space: nowrap;
-
     pointer-events: none;
 
     text-shadow:
@@ -359,16 +303,14 @@ body {
 
 
 /* =====================================================
-   OFFERING COUNTERS
+   OFFERINGS
 ===================================================== */
 
 .offeringValue {
     position: absolute;
-
     z-index: 40;
 
     top: 46.7%;
-
     width: 3%;
 
     text-align: center;
@@ -413,17 +355,13 @@ body {
 #startScreen {
     position: absolute;
     inset: 0;
-
     z-index: 80;
 
     display: flex;
-
     flex-direction: column;
 
     align-items: center;
     justify-content: center;
-
-    padding: 0;
 
     background:
         rgba(30, 8, 0, 0.18);
@@ -469,9 +407,7 @@ body {
     );
 
     font-weight: 1000;
-
     letter-spacing: 1px;
-
     text-align: center;
 
     text-shadow:
@@ -493,7 +429,6 @@ body {
     );
 
     font-weight: 900;
-
     text-align: center;
 
     text-shadow:
@@ -504,7 +439,6 @@ body {
     margin-top: 22px;
 
     padding: 13px 34px;
-
     min-width: 220px;
 
     border:
@@ -527,7 +461,6 @@ body {
     );
 
     font-weight: 1000;
-
     cursor: pointer;
 
     box-shadow:
@@ -546,24 +479,19 @@ body {
 
 .gameHitButton {
     position: absolute;
-
     z-index: 50;
 
     background: transparent;
-
     border: none;
-
     padding: 0;
 
     cursor: pointer;
-
     touch-action: manipulation;
 }
 
 #jumpButton {
     left: 31.5%;
     top: 89.3%;
-
     width: 8.2%;
     height: 8%;
 }
@@ -571,7 +499,6 @@ body {
 #pauseButton {
     left: 40%;
     top: 89.3%;
-
     width: 8.4%;
     height: 8%;
 }
@@ -579,7 +506,6 @@ body {
 #restartButton {
     left: 48.7%;
     top: 89.3%;
-
     width: 9.2%;
     height: 8%;
 }
@@ -587,7 +513,6 @@ body {
 #mapButton {
     left: 58.3%;
     top: 89.3%;
-
     width: 8%;
     height: 8%;
 }
@@ -601,7 +526,6 @@ body {
     display: none;
 
     position: absolute;
-
     z-index: 60;
 
     left: 40%;
@@ -610,9 +534,7 @@ body {
     width: 8.4%;
     height: 8.3%;
 
-    border:
-        3px solid #9a4b0e;
-
+    border: 3px solid #9a4b0e;
     border-radius: 13px;
 
     background:
@@ -630,7 +552,6 @@ body {
     );
 
     font-weight: 1000;
-
     cursor: pointer;
 
     box-shadow:
@@ -644,7 +565,6 @@ body {
 
 #message {
     position: absolute;
-
     z-index: 65;
 
     left: 50%;
@@ -672,7 +592,6 @@ body {
     white-space: nowrap;
 
     opacity: 0;
-
     pointer-events: none;
 
     transition: opacity 0.2s;
@@ -696,7 +615,6 @@ body {
     right: 0;
 
     top: 4.5%;
-
     height: 43%;
 
     z-index: 10;
@@ -730,7 +648,6 @@ body {
 
 #soundButton {
     position: absolute;
-
     z-index: 90;
 
     right: 1.2%;
@@ -750,7 +667,6 @@ body {
     color: white;
 
     cursor: pointer;
-
     font-size: 19px;
 }
 
@@ -761,7 +677,6 @@ body {
 
 #gameOver {
     position: absolute;
-
     inset: 0;
 
     z-index: 100;
@@ -808,13 +723,11 @@ body {
     );
 
     font-weight: 1000;
-
     color: #762106;
 }
 
 .heartsLost {
     margin-top: 8px;
-
     font-size: 28px;
 }
 
@@ -822,7 +735,6 @@ body {
     margin-top: 10px;
 
     font-size: 23px;
-
     font-weight: 900;
 
     color: #592006;
@@ -843,7 +755,6 @@ body {
     color: #672507;
 
     font-size: 18px;
-
     font-weight: 1000;
 
     cursor: pointer;
@@ -863,7 +774,6 @@ body {
     #startScreen::before {
         width: 82%;
         left: 9%;
-
         height: 42%;
         top: 29%;
     }
@@ -871,7 +781,6 @@ body {
     #soundButton {
         width: 34px;
         height: 34px;
-
         font-size: 15px;
     }
 }
