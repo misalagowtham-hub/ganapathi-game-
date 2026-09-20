@@ -1,5 +1,6 @@
 /* =========================================================
    MUSHAK: THE FESTIVAL RUN
+   Ganesh Chaturthi Endless Runner
 ========================================================= */
 
 
@@ -7,18 +8,35 @@
    ELEMENTS
 ========================================================= */
 
-const scene = document.getElementById("scene");
-const player = document.getElementById("player");
-const playerImage = player.querySelector("img");
-const objectsContainer = document.getElementById("objects");
+const scene =
+    document.getElementById("scene");
 
-const startScreen = document.getElementById("startScreen");
-const startButton = document.getElementById("startButton");
+const player =
+    document.getElementById("player");
 
-const jumpButton = document.getElementById("jumpButton");
-const pauseButton = document.getElementById("pauseButton");
-const restartButton = document.getElementById("restartButton");
-const mapButton = document.getElementById("mapButton");
+const playerImage =
+    player.querySelector("img");
+
+const objectsContainer =
+    document.getElementById("objects");
+
+const startScreen =
+    document.getElementById("startScreen");
+
+const startButton =
+    document.getElementById("startButton");
+
+const jumpButton =
+    document.getElementById("jumpButton");
+
+const pauseButton =
+    document.getElementById("pauseButton");
+
+const restartButton =
+    document.getElementById("restartButton");
+
+const mapButton =
+    document.getElementById("mapButton");
 
 const continueButton =
     document.getElementById("continueButton");
@@ -77,20 +95,25 @@ const heartsLost =
 ========================================================= */
 
 let gameRunning = false;
+
 let paused = false;
 
 let animationId = null;
+
 let lastTime = 0;
 
 let distance = 0;
+
 let score = 0;
 
 let combo = 1;
+
 let lives = 3;
 
 let speed = 0.52;
 
 let playerY = 0;
+
 let playerVelocity = 0;
 
 let isJumping = false;
@@ -106,8 +129,11 @@ let missionProgress = 0;
 const missionTarget = 10;
 
 let modaks = 0;
+
 let durvas = 0;
+
 let flowers = 0;
+
 let diyas = 0;
 
 let soundOn = true;
@@ -115,6 +141,11 @@ let soundOn = true;
 let messageTimer = null;
 
 let obstacleCooldown = 0;
+
+
+/* =========================================================
+   OBJECT DATA
+========================================================= */
 
 const objects = [];
 
@@ -153,7 +184,7 @@ const collectibleTypes = [
 
 
 /* =========================================================
-   DECORATIVE ROAD FLOWERS
+   ROAD FLOWERS
 ========================================================= */
 
 function createRoadFlowers() {
@@ -205,26 +236,104 @@ function createRoadFlowers() {
     ];
 
 
-    roadFlowers.forEach(item => {
+    roadFlowers.forEach(
+        item => {
 
-        const flower =
-            document.createElement("div");
+            const flower =
+                document.createElement(
+                    "div"
+                );
 
-        flower.className =
-            "roadFlower";
+            flower.className =
+                "roadFlower";
 
-        flower.textContent =
-            item.icon;
+            flower.textContent =
+                item.icon;
 
-        flower.style.left =
-            `${item.left}%`;
+            flower.style.left =
+                `${item.left}%`;
 
-        flower.style.bottom =
-            `${item.bottom}%`;
+            flower.style.bottom =
+                `${item.bottom}%`;
 
-        scene.appendChild(flower);
+            scene.appendChild(
+                flower
+            );
+        }
+    );
+}
 
-    });
+
+/* =========================================================
+   DISTANCE BASED SKY COLOUR
+========================================================= */
+
+function updateSkyColor() {
+
+    /*
+       Every 500 metres the sky changes.
+
+       0 - 499   = BLUE
+       500 - 999  = PINK
+       1000-1499  = GREEN
+       1500-1999  = PURPLE
+       2000-2499  = ORANGE
+       2500+      = BLUE and repeats
+    */
+
+    const stage =
+        Math.floor(
+            distance / 500
+        ) % 5;
+
+
+    scene.classList.remove(
+        "sky-blue",
+        "sky-pink",
+        "sky-green",
+        "sky-purple",
+        "sky-orange"
+    );
+
+
+    if (stage === 0) {
+
+        scene.classList.add(
+            "sky-blue"
+        );
+
+    }
+
+    else if (stage === 1) {
+
+        scene.classList.add(
+            "sky-pink"
+        );
+
+    }
+
+    else if (stage === 2) {
+
+        scene.classList.add(
+            "sky-green"
+        );
+
+    }
+
+    else if (stage === 3) {
+
+        scene.classList.add(
+            "sky-purple"
+        );
+
+    }
+
+    else if (stage === 4) {
+
+        scene.classList.add(
+            "sky-orange"
+        );
+    }
 }
 
 
@@ -297,6 +406,8 @@ function resetGame() {
     message.classList.remove(
         "show"
     );
+
+    updateSkyColor();
 
     updateHUD();
 }
@@ -476,8 +587,14 @@ function updateWorld(delta) {
     moveObjects(delta);
 
 
+    /* ONLY DISTANCE CONTROLS SKY COLOUR */
+
+    updateSkyColor();
+
+
     if (
-        distance >= nextSpawnDistance &&
+        distance >=
+            nextSpawnDistance &&
         obstacleCooldown <= 0
     ) {
 
@@ -499,6 +616,7 @@ function updateWorld(delta) {
 
 /* =========================================================
    SPAWN SECTION
+   5-6 COLLECTIBLES FOR EACH OBSTACLE
 ========================================================= */
 
 function spawnSection() {
@@ -583,7 +701,9 @@ function createObject(
 ) {
 
     const element =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
 
     element.className =
@@ -625,11 +745,12 @@ function createObject(
         value,
 
         collected: false
-
     };
 
 
-    objects.push(object);
+    objects.push(
+        object
+    );
 
 
     objectsContainer.appendChild(
@@ -658,7 +779,8 @@ function moveObjects(delta) {
             objects[i];
 
 
-        object.x -= movement;
+        object.x -=
+            movement;
 
 
         object.element.style.left =
@@ -671,14 +793,21 @@ function moveObjects(delta) {
         ) {
 
             if (
-                object.type === "rock"
+                object.type ===
+                "rock"
             ) {
 
-                hitObstacle(object);
+                hitObstacle(
+                    object
+                );
 
-            } else {
+            }
 
-                collectItem(object);
+            else {
+
+                collectItem(
+                    object
+                );
             }
         }
 
@@ -688,6 +817,7 @@ function moveObjects(delta) {
         ) {
 
             object.element.remove();
+
 
             objects.splice(
                 i,
@@ -754,17 +884,14 @@ function hitObstacle(object) {
     obstacleCooldown = 55;
 
 
-    /* COLORFUL BACKGROUND EFFECT */
-
-    flashHit();
-
-
     showMessage(
         `Ouch! Lives left: ${lives} ❤️`
     );
 
 
-    if (lives <= 0) {
+    if (
+        lives <= 0
+    ) {
 
         endGame();
 
@@ -808,7 +935,8 @@ function collectItem(object) {
 
 
     if (
-        object.type === "modak"
+        object.type ===
+        "modak"
     ) {
 
         modaks++;
@@ -816,7 +944,8 @@ function collectItem(object) {
 
 
     if (
-        object.type === "durva"
+        object.type ===
+        "durva"
     ) {
 
         durvas++;
@@ -824,7 +953,8 @@ function collectItem(object) {
 
 
     if (
-        object.type === "flower"
+        object.type ===
+        "flower"
     ) {
 
         flowers++;
@@ -832,7 +962,8 @@ function collectItem(object) {
 
 
     if (
-        object.type === "diya"
+        object.type ===
+        "diya"
     ) {
 
         diyas++;
@@ -848,49 +979,19 @@ function collectItem(object) {
 
         missionProgress = 0;
 
+
         showMessage(
             "Mission complete! +100 🎉"
         );
 
-    } else {
+    }
+
+    else {
 
         showMessage(
             `+${object.value * combo}`
         );
     }
-}
-
-
-/* =========================================================
-   COLORFUL HIT EFFECT
-========================================================= */
-
-function flashHit() {
-
-    scene.classList.remove(
-        "hitFlash"
-    );
-
-
-    /* Restart CSS animation */
-
-    void scene.offsetWidth;
-
-
-    scene.classList.add(
-        "hitFlash"
-    );
-
-
-    /* Remove after animation */
-
-    setTimeout(() => {
-
-        scene.classList.remove(
-            "hitFlash"
-        );
-
-    }, 1200);
 }
 
 
@@ -953,7 +1054,6 @@ function pauseGame() {
     if (!gameRunning) {
         return;
     }
-
 
     if (paused) {
         return;
@@ -1036,7 +1136,8 @@ function showMap() {
 
 function toggleSound() {
 
-    soundOn = !soundOn;
+    soundOn =
+        !soundOn;
 
 
     soundButton.textContent =
@@ -1074,13 +1175,16 @@ function showMessage(text) {
 
 
     messageTimer =
-        setTimeout(() => {
+        setTimeout(
+            () => {
 
-            message.classList.remove(
-                "show"
-            );
+                message.classList.remove(
+                    "show"
+                );
 
-        }, 1000);
+            },
+            1000
+        );
 }
 
 
@@ -1195,8 +1299,10 @@ document.addEventListener(
     (event) => {
 
         if (
-            event.code === "Space" ||
-            event.code === "ArrowUp"
+            event.code ===
+                "Space" ||
+            event.code ===
+                "ArrowUp"
         ) {
 
             event.preventDefault();
@@ -1206,7 +1312,9 @@ document.addEventListener(
 
                 startGame();
 
-            } else {
+            }
+
+            else {
 
                 jump();
             }
@@ -1214,20 +1322,23 @@ document.addEventListener(
 
 
         if (
-            event.code === "KeyP" ||
-            event.code === "Escape"
+            event.code ===
+                "KeyP" ||
+            event.code ===
+                "Escape"
         ) {
 
             if (!paused) {
 
                 pauseGame();
 
-            } else {
+            }
+
+            else {
 
                 continueGame();
             }
         }
-
     }
 );
 
@@ -1256,7 +1367,6 @@ scene.addEventListener(
 
             jump();
         }
-
     },
     {
         passive: true
@@ -1275,7 +1385,6 @@ playerImage.addEventListener(
         showMessage(
             "Mushak image not found"
         );
-
     }
 );
 
