@@ -1,6 +1,5 @@
 /* =========================================================
    MUSHAK: THE FESTIVAL RUN
-   Ganesh Chaturthi Endless Runner
 ========================================================= */
 
 
@@ -91,6 +90,23 @@ const heartsLost =
 
 
 /* =========================================================
+   SKY COLOUR LAYER
+   CREATED BY JAVASCRIPT
+========================================================= */
+
+const skyColorLayer =
+    document.createElement("div");
+
+skyColorLayer.id =
+    "skyColorLayer";
+
+scene.insertBefore(
+    skyColorLayer,
+    scene.firstChild
+);
+
+
+/* =========================================================
    GAME STATE
 ========================================================= */
 
@@ -144,14 +160,14 @@ let obstacleCooldown = 0;
 
 
 /* =========================================================
-   OBJECT DATA
+   OBJECTS
 ========================================================= */
 
 const objects = [];
 
 
 /* =========================================================
-   COLLECTIBLE TYPES
+   COLLECTIBLES
 ========================================================= */
 
 const collectibleTypes = [
@@ -191,47 +207,13 @@ function createRoadFlowers() {
 
     const roadFlowers = [
 
-        {
-            left: 4.5,
-            bottom: 13.0,
-            icon: "🌸"
-        },
-
-        {
-            left: 8.5,
-            bottom: 12.5,
-            icon: "🌼"
-        },
-
-        {
-            left: 28.5,
-            bottom: 13.2,
-            icon: "🌸"
-        },
-
-        {
-            left: 34.0,
-            bottom: 12.8,
-            icon: "🌼"
-        },
-
-        {
-            left: 70.5,
-            bottom: 13.0,
-            icon: "🌸"
-        },
-
-        {
-            left: 76.0,
-            bottom: 12.6,
-            icon: "🌼"
-        },
-
-        {
-            left: 91.0,
-            bottom: 13.0,
-            icon: "🌸"
-        }
+        [4.5, 13.0, "🌸"],
+        [8.5, 12.5, "🌼"],
+        [28.5, 13.2, "🌸"],
+        [34.0, 12.8, "🌼"],
+        [70.5, 13.0, "🌸"],
+        [76.0, 12.6, "🌼"],
+        [91.0, 13.0, "🌸"]
 
     ];
 
@@ -248,13 +230,13 @@ function createRoadFlowers() {
                 "roadFlower";
 
             flower.textContent =
-                item.icon;
+                item[2];
 
             flower.style.left =
-                `${item.left}%`;
+                `${item[0]}%`;
 
             flower.style.bottom =
-                `${item.bottom}%`;
+                `${item[1]}%`;
 
             scene.appendChild(
                 flower
@@ -265,20 +247,10 @@ function createRoadFlowers() {
 
 
 /* =========================================================
-   DISTANCE BASED SKY COLOUR
+   DISTANCE SKY COLOUR
 ========================================================= */
 
 function updateSkyColor() {
-
-    /*
-       0 - 499 m      BLUE
-       500 - 999 m    PINK
-       1000 - 1499 m  GREEN
-       1500 - 1999 m  PURPLE
-       2000 - 2499 m  ORANGE
-
-       Then it repeats.
-    */
 
     const stage =
         Math.floor(
@@ -286,54 +258,53 @@ function updateSkyColor() {
         ) % 5;
 
 
+    /*
+       0 = BLUE
+       1 = PINK
+       2 = GREEN
+       3 = PURPLE
+       4 = ORANGE
+    */
+
+
     if (stage === 0) {
 
-        scene.style.setProperty(
-            "--sky-tint",
-            "rgba(0, 0, 0, 0)"
-        );
-
+        skyColorLayer.style.backgroundColor =
+            "rgba(0, 120, 255, 0.00)";
     }
+
 
     else if (stage === 1) {
 
-        scene.style.setProperty(
-            "--sky-tint",
-            "rgba(255, 55, 150, 0.48)"
-        );
-
+        skyColorLayer.style.backgroundColor =
+            "rgba(255, 20, 130, 0.55)";
     }
+
 
     else if (stage === 2) {
 
-        scene.style.setProperty(
-            "--sky-tint",
-            "rgba(35, 210, 100, 0.48)"
-        );
-
+        skyColorLayer.style.backgroundColor =
+            "rgba(20, 210, 90, 0.55)";
     }
+
 
     else if (stage === 3) {
 
-        scene.style.setProperty(
-            "--sky-tint",
-            "rgba(145, 55, 255, 0.50)"
-        );
-
+        skyColorLayer.style.backgroundColor =
+            "rgba(135, 35, 255, 0.58)";
     }
+
 
     else if (stage === 4) {
 
-        scene.style.setProperty(
-            "--sky-tint",
-            "rgba(255, 145, 20, 0.48)"
-        );
+        skyColorLayer.style.backgroundColor =
+            "rgba(255, 120, 10, 0.55)";
     }
 }
 
 
 /* =========================================================
-   RESET GAME
+   RESET
 ========================================================= */
 
 function resetGame() {
@@ -402,19 +373,19 @@ function resetGame() {
         "show"
     );
 
-    /* RESET SKY TO BLUE */
 
-    scene.style.setProperty(
-        "--sky-tint",
-        "rgba(0, 0, 0, 0)"
-    );
+    /* START WITH BLUE SKY */
+
+    skyColorLayer.style.backgroundColor =
+        "rgba(0, 120, 255, 0.00)";
+
 
     updateHUD();
 }
 
 
 /* =========================================================
-   START GAME
+   START
 ========================================================= */
 
 function startGame() {
@@ -460,6 +431,7 @@ function gameLoop(time) {
         return;
     }
 
+
     if (paused) {
 
         animationId =
@@ -496,7 +468,7 @@ function gameLoop(time) {
 
 
 /* =========================================================
-   PLAYER JUMP
+   JUMP
 ========================================================= */
 
 function jump() {
@@ -520,7 +492,7 @@ function jump() {
 
 
 /* =========================================================
-   PLAYER PHYSICS
+   PLAYER
 ========================================================= */
 
 function updatePlayer(delta) {
@@ -565,7 +537,7 @@ function updatePlayer(delta) {
 
 
 /* =========================================================
-   WORLD UPDATE
+   WORLD
 ========================================================= */
 
 function updateWorld(delta) {
@@ -581,16 +553,17 @@ function updateWorld(delta) {
         );
 
 
-    obstacleCooldown -= delta;
+    obstacleCooldown -=
+        delta;
 
 
     moveObjects(delta);
 
 
-    /* ================================================
-       ONLY NEW FEATURE:
-       CHANGE SKY COLOUR BY DISTANCE
-       ================================================ */
+    /* ==========================================
+       ONLY NEW CHANGE:
+       SKY COLOUR DEPENDS ON DISTANCE
+    ========================================== */
 
     updateSkyColor();
 
@@ -618,8 +591,7 @@ function updateWorld(delta) {
 
 
 /* =========================================================
-   SPAWN SECTION
-   5-6 COLLECTIBLES FOR EACH OBSTACLE
+   SPAWN
 ========================================================= */
 
 function spawnSection() {
@@ -832,7 +804,7 @@ function moveObjects(delta) {
 
 
 /* =========================================================
-   COLLISION DETECTION
+   COLLISION
 ========================================================= */
 
 function checkCollision(object) {
@@ -873,16 +845,12 @@ function hitObstacle(object) {
 
     object.collected = true;
 
-
     object.element.style.opacity =
         "0";
 
-
     lives--;
 
-
     combo = 1;
-
 
     obstacleCooldown = 55;
 
@@ -907,17 +875,15 @@ function hitObstacle(object) {
 
 
 /* =========================================================
-   COLLECT ITEM
+   COLLECT
 ========================================================= */
 
 function collectItem(object) {
 
     object.collected = true;
 
-
     object.element.style.transform =
         "scale(1.5)";
-
 
     object.element.style.opacity =
         "0";
@@ -1134,7 +1100,7 @@ function showMap() {
 
 
 /* =========================================================
-   SOUND BUTTON
+   SOUND
 ========================================================= */
 
 function toggleSound() {
@@ -1225,7 +1191,7 @@ function endGame() {
 
 
 /* =========================================================
-   RANDOM NUMBER
+   RANDOM
 ========================================================= */
 
 function randomBetween(
@@ -1250,42 +1216,35 @@ startButton.addEventListener(
     startGame
 );
 
-
 jumpButton.addEventListener(
     "click",
     jump
 );
-
 
 pauseButton.addEventListener(
     "click",
     pauseGame
 );
 
-
 continueButton.addEventListener(
     "click",
     continueGame
 );
-
 
 restartButton.addEventListener(
     "click",
     restartGame
 );
 
-
 mapButton.addEventListener(
     "click",
     showMap
 );
 
-
 soundButton.addEventListener(
     "click",
     toggleSound
 );
-
 
 gameOverRestart.addEventListener(
     "click",
@@ -1294,7 +1253,7 @@ gameOverRestart.addEventListener(
 
 
 /* =========================================================
-   KEYBOARD CONTROLS
+   KEYBOARD
 ========================================================= */
 
 document.addEventListener(
@@ -1347,7 +1306,7 @@ document.addEventListener(
 
 
 /* =========================================================
-   TOUCH CONTROL
+   TOUCH
 ========================================================= */
 
 scene.addEventListener(
@@ -1378,7 +1337,7 @@ scene.addEventListener(
 
 
 /* =========================================================
-   MUSHAK IMAGE CHECK
+   IMAGE CHECK
 ========================================================= */
 
 playerImage.addEventListener(
