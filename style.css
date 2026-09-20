@@ -43,9 +43,8 @@ body {
 
 
 /* =====================================================
-   BACKGROUND COVER
-   Hides the TWO BAKED-IN MUSHAKS.
-   Matches wall + yellow road edge + road.
+   COVER THE TWO BAKED-IN MUSHAKS
+   Brown wall + yellow line + road
 ===================================================== */
 
 #scene::before {
@@ -53,34 +52,24 @@ body {
 
     position: absolute;
 
-    left: 11.8%;
-    bottom: 14.0%;
+    left: 12.2%;
+    bottom: 13.6%;
 
-    width: 14.8%;
-    height: 18.8%;
+    width: 15.2%;
+    height: 19.2%;
 
     z-index: 15;
 
     background:
         linear-gradient(
             to bottom,
-
-            /* BROWN WALL */
             #91472a 0%,
-            #91472a 70%,
-
-            /* YELLOW ROAD EDGE */
-            #e5bd38 70%,
-            #e5bd38 74%,
-
-            /* ROAD */
-            #555a61 74%,
+            #91472a 69%,
+            #d9ad31 69%,
+            #d9ad31 73%,
+            #555a61 73%,
             #555a61 100%
         );
-
-    border-radius: 0;
-
-    box-shadow: none;
 
     pointer-events: none;
 }
@@ -104,17 +93,16 @@ body {
 
 /* =====================================================
    MUSHAK
-   ONE LIVE MUSHAK
 ===================================================== */
 
 #player {
     position: absolute;
 
-    left: 16.2%;
-    bottom: 14.8%;
+    left: 15.9%;
+    bottom: 14.6%;
 
-    width: 7.0%;
-    height: 13.5%;
+    width: 7.8%;
+    height: 15%;
 
     display: flex;
 
@@ -146,7 +134,6 @@ body {
 
 #objects {
     position: absolute;
-
     inset: 0;
 
     overflow: hidden;
@@ -167,6 +154,38 @@ body {
     z-index: 25;
 
     will-change: left, bottom;
+}
+
+
+/* =====================================================
+   ROAD FLOWERS
+===================================================== */
+
+.roadFlower {
+    position: absolute;
+
+    z-index: 17;
+
+    width: 2.2%;
+    height: 4%;
+
+    font-size: clamp(
+        15px,
+        1.5vw,
+        28px
+    );
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    pointer-events: none;
+
+    filter:
+        drop-shadow(
+            0 2px 2px rgba(0, 0, 0, 0.35)
+        );
 }
 
 
@@ -213,7 +232,7 @@ body {
 
 
 /* =====================================================
-   HUD NUMBERS
+   HUD
 ===================================================== */
 
 .liveValue {
@@ -238,67 +257,59 @@ body {
 }
 
 
-/* =====================================================
-   DISTANCE
-===================================================== */
+/* DISTANCE */
 
 .distanceValue {
     left: 34.8%;
-    top: 27.0%;
+    top: 26.8%;
 
     width: 7.0%;
 
     font-size: clamp(
         11px,
-        1.0vw,
+        1vw,
         19px
     );
 }
 
 
-/* =====================================================
-   SCORE
-===================================================== */
+/* SCORE */
 
 .scoreValue {
     left: 47.6%;
-    top: 27.0%;
+    top: 26.8%;
 
     width: 7.0%;
 
     font-size: clamp(
         11px,
-        1.0vw,
+        1vw,
         19px
     );
 }
 
 
-/* =====================================================
-   COMBO
-===================================================== */
+/* COMBO */
 
 .comboValue {
     left: 60.9%;
-    top: 27.0%;
+    top: 26.8%;
 
     width: 7.0%;
 
     font-size: clamp(
         11px,
-        1.0vw,
+        1vw,
         19px
     );
 }
 
 
-/* =====================================================
-   LIVES
-===================================================== */
+/* LIVES */
 
 .livesValue {
     left: 73.6%;
-    top: 26.7%;
+    top: 26.5%;
 
     width: 8.5%;
 
@@ -312,26 +323,24 @@ body {
 }
 
 
-/* =====================================================
-   SPEED
-===================================================== */
+/* SPEED */
 
 .speedValue {
     left: 86.8%;
-    top: 27.0%;
+    top: 26.8%;
 
     width: 7.5%;
 
     font-size: clamp(
         11px,
-        1.0vw,
+        1vw,
         19px
     );
 }
 
 
 /* =====================================================
-   MISSION NUMBER
+   FESTIVAL MISSION
 ===================================================== */
 
 #missionValue {
@@ -339,26 +348,35 @@ body {
 
     z-index: 40;
 
-    left: 25.3%;
-    top: 37.0%;
+    left: 24.1%;
+    top: 35.0%;
 
-    width: 5.2%;
+    width: 7.0%;
+
+    height: 5%;
 
     color: #d83c0e;
 
     font-size: clamp(
         10px,
-        0.9vw,
-        17px
+        0.95vw,
+        19px
     );
 
     font-weight: 1000;
+
+    line-height: 1;
 
     text-align: center;
 
     white-space: nowrap;
 
     pointer-events: none;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
 
     text-shadow:
         0 1px 0 white;
@@ -374,7 +392,7 @@ body {
 
     z-index: 40;
 
-    top: 46.7%;
+    top: 43.6%;
 
     width: 3%;
 
@@ -415,7 +433,6 @@ body {
 
 /* =====================================================
    START SCREEN
-   FESTIVE BOX
 ===================================================== */
 
 #startScreen {
@@ -433,14 +450,9 @@ body {
 
     justify-content: center;
 
-    padding: 0;
-
     background:
         rgba(30, 8, 0, 0.18);
 }
-
-
-/* FESTIVE BOX */
 
 #startScreen::before {
     content: "";
@@ -472,9 +484,6 @@ body {
     z-index: -1;
 }
 
-
-/* FESTIVE TITLE */
-
 .startTitle {
     color: #8a2d08;
 
@@ -497,9 +506,6 @@ body {
     max-width: 90%;
 }
 
-
-/* FESTIVE SUBTITLE */
-
 .startSubtitle {
     margin-top: 10px;
 
@@ -518,9 +524,6 @@ body {
     text-shadow:
         0 1px 0 white;
 }
-
-
-/* PLAY BUTTON */
 
 #startButton {
     margin-top: 22px;
@@ -563,7 +566,7 @@ body {
 
 
 /* =====================================================
-   BOTTOM BUTTONS
+   BUTTONS
 ===================================================== */
 
 .gameHitButton {
@@ -582,9 +585,6 @@ body {
     touch-action: manipulation;
 }
 
-
-/* JUMP */
-
 #jumpButton {
     left: 31.5%;
     top: 89.3%;
@@ -592,9 +592,6 @@ body {
     width: 8.2%;
     height: 8%;
 }
-
-
-/* PAUSE */
 
 #pauseButton {
     left: 40%;
@@ -604,9 +601,6 @@ body {
     height: 8%;
 }
 
-
-/* RESTART */
-
 #restartButton {
     left: 48.7%;
     top: 89.3%;
@@ -614,9 +608,6 @@ body {
     width: 9.2%;
     height: 8%;
 }
-
-
-/* MAP */
 
 #mapButton {
     left: 58.3%;
@@ -628,7 +619,7 @@ body {
 
 
 /* =====================================================
-   CONTINUE BUTTON
+   CONTINUE
 ===================================================== */
 
 #continueButton {
@@ -719,7 +710,6 @@ body {
 
 /* =====================================================
    HIT FLASH
-   ONLY BLUE SKY AREA
 ===================================================== */
 
 #scene.hitFlash::after {
