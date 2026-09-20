@@ -29,20 +29,46 @@ body {
     width: 100%;
     aspect-ratio: 1821 / 864;
 
-    background-image: url("festival-game-bg.png");
-    background-size: 100% 100%;
-    background-position: center;
-    background-repeat: no-repeat;
+    /* =================================================
+       ORIGINAL BACKGROUND + DISTANCE SKY COLOUR
+       ================================================= */
+
+    --sky-tint: rgba(0, 0, 0, 0);
+
+    background-image:
+        linear-gradient(
+            to bottom,
+            var(--sky-tint) 0%,
+            var(--sky-tint) 49%,
+            rgba(0, 0, 0, 0) 49%,
+            rgba(0, 0, 0, 0) 100%
+        ),
+        url("festival-game-bg.png");
+
+    background-size:
+        100% 100%,
+        100% 100%;
+
+    background-position:
+        center,
+        center;
+
+    background-repeat:
+        no-repeat,
+        no-repeat;
 
     overflow: hidden;
     user-select: none;
     touch-action: manipulation;
+
+    transition:
+        --sky-tint 1.5s ease;
 }
 
 
 /* =====================================================
    BACKGROUND COVER
-   HIDES THE BAKED-IN MUSHAKS
+   HIDES THE TWO BAKED-IN MUSHAKS
 ===================================================== */
 
 #scene::before {
@@ -50,24 +76,31 @@ body {
 
     position: absolute;
 
-    left: 12.2%;
-    bottom: 13.6%;
+    left: 11.8%;
+    bottom: 14.0%;
 
-    width: 15.2%;
-    height: 19.2%;
+    width: 14.8%;
+    height: 18.8%;
 
     z-index: 15;
 
     background:
         linear-gradient(
             to bottom,
+
             #91472a 0%,
-            #91472a 69%,
-            #d9ad31 69%,
-            #d9ad31 73%,
-            #555a61 73%,
+            #91472a 70%,
+
+            #e5bd38 70%,
+            #e5bd38 74%,
+
+            #555a61 74%,
             #555a61 100%
         );
+
+    border-radius: 0;
+
+    box-shadow: none;
 
     pointer-events: none;
 }
@@ -96,11 +129,11 @@ body {
 #player {
     position: absolute;
 
-    left: 15.9%;
-    bottom: 14.6%;
+    left: 16.2%;
+    bottom: 14.8%;
 
-    width: 7.8%;
-    height: 15%;
+    width: 7.0%;
+    height: 13.5%;
 
     display: flex;
 
@@ -231,7 +264,7 @@ body {
 
 
 /* =====================================================
-   HUD
+   HUD NUMBERS
 ===================================================== */
 
 .liveValue {
@@ -262,13 +295,13 @@ body {
 
 .distanceValue {
     left: 34.8%;
-    top: 26.8%;
+    top: 27.0%;
 
-    width: 7%;
+    width: 7.0%;
 
     font-size: clamp(
         11px,
-        1vw,
+        1.0vw,
         19px
     );
 }
@@ -280,13 +313,13 @@ body {
 
 .scoreValue {
     left: 47.6%;
-    top: 26.8%;
+    top: 27.0%;
 
-    width: 7%;
+    width: 7.0%;
 
     font-size: clamp(
         11px,
-        1vw,
+        1.0vw,
         19px
     );
 }
@@ -298,13 +331,13 @@ body {
 
 .comboValue {
     left: 60.9%;
-    top: 26.8%;
+    top: 27.0%;
 
-    width: 7%;
+    width: 7.0%;
 
     font-size: clamp(
         11px,
-        1vw,
+        1.0vw,
         19px
     );
 }
@@ -316,7 +349,7 @@ body {
 
 .livesValue {
     left: 73.6%;
-    top: 26.5%;
+    top: 26.7%;
 
     width: 8.5%;
 
@@ -336,20 +369,20 @@ body {
 
 .speedValue {
     left: 86.8%;
-    top: 26.8%;
+    top: 27.0%;
 
     width: 7.5%;
 
     font-size: clamp(
         11px,
-        1vw,
+        1.0vw,
         19px
     );
 }
 
 
 /* =====================================================
-   MISSION
+   MISSION NUMBER
 ===================================================== */
 
 #missionValue {
@@ -357,35 +390,26 @@ body {
 
     z-index: 40;
 
-    left: 24.1%;
-    top: 35%;
+    left: 25.3%;
+    top: 37.0%;
 
-    width: 7%;
-
-    height: 5%;
+    width: 5.2%;
 
     color: #d83c0e;
 
     font-size: clamp(
         10px,
-        0.95vw,
-        19px
+        0.9vw,
+        17px
     );
 
     font-weight: 1000;
-
-    line-height: 1;
 
     text-align: center;
 
     white-space: nowrap;
 
     pointer-events: none;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
 
     text-shadow:
         0 1px 0 white;
@@ -401,7 +425,7 @@ body {
 
     z-index: 40;
 
-    top: 43.6%;
+    top: 46.7%;
 
     width: 3%;
 
@@ -502,7 +526,7 @@ body {
 
 
 /* =====================================================
-   START TITLE
+   FESTIVE TITLE
 ===================================================== */
 
 .startTitle {
@@ -529,7 +553,7 @@ body {
 
 
 /* =====================================================
-   START SUBTITLE
+   FESTIVE SUBTITLE
 ===================================================== */
 
 .startSubtitle {
@@ -553,7 +577,7 @@ body {
 
 
 /* =====================================================
-   START BUTTON
+   PLAY BUTTON
 ===================================================== */
 
 #startButton {
@@ -678,8 +702,7 @@ body {
     width: 8.4%;
     height: 8.3%;
 
-    border:
-        3px solid #9a4b0e;
+    border: 3px solid #9a4b0e;
 
     border-radius: 13px;
 
@@ -747,94 +770,6 @@ body {
 }
 
 #message.show {
-    opacity: 1;
-}
-
-
-/* =====================================================
-   DISTANCE BASED SKY COLOUR
-   ONLY THE BLUE SKY AREA
-===================================================== */
-
-#scene::after {
-    content: "";
-
-    position: absolute;
-
-    left: 0;
-    right: 0;
-
-    top: 5.5%;
-    height: 44%;
-
-    z-index: 10;
-
-    pointer-events: none;
-
-    opacity: 0;
-
-    transition:
-        background 1.5s ease,
-        opacity 1.5s ease;
-}
-
-
-/* =====================================================
-   PINK
-===================================================== */
-
-#scene.sky-pink::after {
-    background:
-        rgba(255, 70, 150, 0.42);
-
-    opacity: 1;
-}
-
-
-/* =====================================================
-   GREEN
-===================================================== */
-
-#scene.sky-green::after {
-    background:
-        rgba(40, 220, 120, 0.42);
-
-    opacity: 1;
-}
-
-
-/* =====================================================
-   PURPLE
-===================================================== */
-
-#scene.sky-purple::after {
-    background:
-        rgba(160, 70, 255, 0.42);
-
-    opacity: 1;
-}
-
-
-/* =====================================================
-   ORANGE
-===================================================== */
-
-#scene.sky-orange::after {
-    background:
-        rgba(255, 170, 20, 0.42);
-
-    opacity: 1;
-}
-
-
-/* =====================================================
-   BLUE
-===================================================== */
-
-#scene.sky-blue::after {
-    background:
-        rgba(0, 140, 255, 0.10);
-
     opacity: 1;
 }
 
