@@ -38,92 +38,13 @@ body {
     user-select: none;
     touch-action: manipulation;
 
-    --hit-color: rgba(255, 70, 50, 0.18);
+    --hit-color: rgba(255, 60, 40, 0.20);
 }
 
 
-/* =====================================================
-   BROWN COVER FOR OLD/BACKGROUND MUSHAK
-   Blends with wall and road
-===================================================== */
-
-#scene::before {
-    content: "";
-
-    position: absolute;
-
-    z-index: 10;
-
-    left: 13.7%;
-    bottom: 14.2%;
-
-    width: 12.8%;
-    height: 17.8%;
-
-    background:
-        linear-gradient(
-            to bottom,
-            #8d4327 0%,
-            #91472a 67%,
-            #81432c 70%,
-            #74777d 73%,
-            #686c73 100%
-        );
-
-    border-radius: 35% 35% 18% 18%;
-
-    box-shadow:
-        inset 0 7px 15px rgba(255,255,255,.035),
-        inset 0 -8px 12px rgba(0,0,0,.08);
-
-    pointer-events: none;
-}
-
-
-/* =====================================================
-   HIT FLASH
-   ONLY BLUE BACKGROUND AREA
-===================================================== */
-
-#scene.hitFlash::after {
-    content: "";
-
-    position: absolute;
-
-    left: 0;
-    right: 0;
-
-    top: 4.5%;
-    height: 43%;
-
-    z-index: 2;
-
-    background: var(--hit-color);
-
-    pointer-events: none;
-
-    animation: skyHitFlash 0.55s ease-out;
-}
-
-@keyframes skyHitFlash {
-
-    0% {
-        opacity: 0;
-    }
-
-    25% {
-        opacity: 1;
-    }
-
-    100% {
-        opacity: 0;
-    }
-}
-
-
-/* =====================================================
-   WORLD
-===================================================== */
+/* =========================================
+   GAME WORLD
+========================================= */
 
 #world {
     position: absolute;
@@ -133,32 +54,28 @@ body {
 
     pointer-events: none;
 
-    z-index: 11;
+    z-index: 20;
 }
 
 
-/* =====================================================
+/* =========================================
    MUSHAK
-===================================================== */
+========================================= */
 
 #player {
     position: absolute;
 
-    left: 15.7%;
-
-    /*
-       Mushak's feet stay naturally on the road.
-    */
+    left: 15.4%;
     bottom: 14.8%;
 
     width: 8.7%;
     height: 16%;
 
-    z-index: 20;
-
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: center;
+
+    z-index: 30;
 
     will-change: transform;
 }
@@ -175,68 +92,76 @@ body {
 }
 
 
-/* =====================================================
+/* =========================================
    MOVING OBJECTS
-===================================================== */
+========================================= */
+
+#objects {
+    position: absolute;
+    inset: 0;
+
+    overflow: hidden;
+
+    pointer-events: none;
+}
 
 .gameObject {
     position: absolute;
 
-    z-index: 18;
-
     display: flex;
-
     align-items: center;
     justify-content: center;
 
     pointer-events: none;
 
-    will-change: left;
+    z-index: 25;
+
+    will-change: left, bottom;
 }
 
 
-/* =====================================================
+/* =========================================
    OBSTACLES
-===================================================== */
+========================================= */
 
 .obstacle {
-    width: 4.5%;
-    height: 6%;
+    width: 4.8%;
+    height: 7%;
 
-    font-size: clamp(25px, 3vw, 50px);
+    font-size: clamp(28px, 3vw, 52px);
 
     filter:
         drop-shadow(
-            0 3px 4px rgba(0,0,0,.4)
+            0 3px 4px rgba(0, 0, 0, 0.45)
         );
 }
 
 
-/* =====================================================
+/* =========================================
    COLLECTIBLES
-===================================================== */
+========================================= */
 
 .collectible {
     width: 3.5%;
     height: 7%;
 
-    font-size: clamp(20px, 2.3vw, 43px);
+    font-size: clamp(21px, 2.4vw, 44px);
 
     filter:
         drop-shadow(
-            0 3px 4px rgba(0,0,0,.35)
+            0 3px 4px rgba(0, 0, 0, 0.35)
         );
 }
 
 
-/* =====================================================
-   HUD NUMBERS
-===================================================== */
+/* =========================================
+   HUD VALUES
+========================================= */
 
 .liveValue {
     position: absolute;
 
-    z-index: 35;
+    z-index: 40;
 
     color: #6d2a0b;
 
@@ -263,12 +188,11 @@ body {
 
     width: 6.8%;
 
-    font-size:
-        clamp(
-            13px,
-            1.25vw,
-            25px
-        );
+    font-size: clamp(
+        13px,
+        1.25vw,
+        25px
+    );
 }
 
 
@@ -280,12 +204,11 @@ body {
 
     width: 7%;
 
-    font-size:
-        clamp(
-            13px,
-            1.25vw,
-            25px
-        );
+    font-size: clamp(
+        13px,
+        1.25vw,
+        25px
+    );
 }
 
 
@@ -297,12 +220,11 @@ body {
 
     width: 7%;
 
-    font-size:
-        clamp(
-            13px,
-            1.25vw,
-            25px
-        );
+    font-size: clamp(
+        13px,
+        1.25vw,
+        25px
+    );
 }
 
 
@@ -314,12 +236,11 @@ body {
 
     width: 8.3%;
 
-    font-size:
-        clamp(
-            11px,
-            1.05vw,
-            21px
-        );
+    font-size: clamp(
+        11px,
+        1.05vw,
+        21px
+    );
 
     letter-spacing: 1px;
 }
@@ -333,46 +254,22 @@ body {
 
     width: 7.5%;
 
-    font-size:
-        clamp(
-            13px,
-            1.25vw,
-            25px
-        );
+    font-size: clamp(
+        13px,
+        1.25vw,
+        25px
+    );
 }
 
 
-/* =====================================================
+/* =========================================
    MISSION
-===================================================== */
-
-#missionCover {
-    position: absolute;
-
-    z-index: 32;
-
-    left: 24.6%;
-    top: 34.0%;
-
-    width: 6.4%;
-    height: 5.2%;
-
-    background:
-        linear-gradient(
-            90deg,
-            #fff8e7,
-            #fff0d2
-        );
-
-    border-radius: 7px;
-
-    pointer-events: none;
-}
+========================================= */
 
 #missionValue {
     position: absolute;
 
-    z-index: 35;
+    z-index: 40;
 
     left: 24.6%;
     top: 34.25%;
@@ -381,12 +278,11 @@ body {
 
     color: #d83c0e;
 
-    font-size:
-        clamp(
-            12px,
-            1.15vw,
-            23px
-        );
+    font-size: clamp(
+        12px,
+        1.15vw,
+        23px
+    );
 
     font-weight: 1000;
 
@@ -395,17 +291,20 @@ body {
     white-space: nowrap;
 
     pointer-events: none;
+
+    text-shadow:
+        0 1px 0 white;
 }
 
 
-/* =====================================================
+/* =========================================
    OFFERING COUNTERS
-===================================================== */
+========================================= */
 
 .offeringValue {
     position: absolute;
 
-    z-index: 35;
+    z-index: 40;
 
     top: 43.6%;
 
@@ -413,22 +312,24 @@ body {
 
     text-align: center;
 
-    font-size:
-        clamp(
-            10px,
-            1vw,
-            20px
-        );
+    font-size: clamp(
+        10px,
+        1vw,
+        20px
+    );
 
     font-weight: 1000;
 
     color: #682a09;
 
     pointer-events: none;
+
+    text-shadow:
+        0 1px 0 white;
 }
 
 .modakValue {
-    left: 77.0%;
+    left: 77%;
 }
 
 .durvaValue {
@@ -444,16 +345,16 @@ body {
 }
 
 
-/* =====================================================
+/* =========================================
    START SCREEN
-===================================================== */
+========================================= */
 
 #startScreen {
     position: absolute;
 
     inset: 0;
 
-    z-index: 60;
+    z-index: 80;
 
     display: flex;
 
@@ -466,18 +367,17 @@ body {
     padding-bottom: 7%;
 
     background:
-        rgba(30,10,0,.15);
+        rgba(25, 8, 0, 0.18);
 }
 
 .startTitle {
     color: #fff3bd;
 
-    font-size:
-        clamp(
-            28px,
-            4vw,
-            70px
-        );
+    font-size: clamp(
+        28px,
+        4vw,
+        70px
+    );
 
     font-weight: 1000;
 
@@ -487,7 +387,7 @@ body {
 
     text-shadow:
         0 4px 0 #752607,
-        0 7px 15px rgba(0,0,0,.65);
+        0 7px 15px rgba(0, 0, 0, 0.65);
 }
 
 .startSubtitle {
@@ -495,12 +395,11 @@ body {
 
     color: white;
 
-    font-size:
-        clamp(
-            13px,
-            1.4vw,
-            26px
-        );
+    font-size: clamp(
+        13px,
+        1.4vw,
+        26px
+    );
 
     font-weight: 800;
 
@@ -527,12 +426,11 @@ body {
 
     color: #682506;
 
-    font-size:
-        clamp(
-            16px,
-            1.6vw,
-            29px
-        );
+    font-size: clamp(
+        16px,
+        1.6vw,
+        29px
+    );
 
     font-weight: 1000;
 
@@ -540,7 +438,7 @@ body {
 
     box-shadow:
         0 5px 0 #71300b,
-        0 8px 18px rgba(0,0,0,.4);
+        0 8px 18px rgba(0, 0, 0, 0.4);
 }
 
 #startButton:active {
@@ -548,15 +446,14 @@ body {
 }
 
 
-/* =====================================================
+/* =========================================
    BOTTOM BUTTONS
-   TRANSPARENT HIT AREAS
-===================================================== */
+========================================= */
 
 .gameHitButton {
     position: absolute;
 
-    z-index: 45;
+    z-index: 50;
 
     background: transparent;
 
@@ -584,7 +481,7 @@ body {
 /* PAUSE */
 
 #pauseButton {
-    left: 40.0%;
+    left: 40%;
     top: 89.3%;
 
     width: 8.4%;
@@ -614,16 +511,16 @@ body {
 }
 
 
-/* =====================================================
-   CONTINUE BUTTON
-===================================================== */
+/* =========================================
+   CONTINUE
+========================================= */
 
 #continueButton {
     display: none;
 
     position: absolute;
 
-    z-index: 50;
+    z-index: 60;
 
     left: 40%;
     top: 89.1%;
@@ -643,12 +540,11 @@ body {
 
     color: #662507;
 
-    font-size:
-        clamp(
-            8px,
-            .85vw,
-            17px
-        );
+    font-size: clamp(
+        8px,
+        0.85vw,
+        17px
+    );
 
     font-weight: 1000;
 
@@ -659,14 +555,14 @@ body {
 }
 
 
-/* =====================================================
+/* =========================================
    MESSAGE
-===================================================== */
+========================================= */
 
 #message {
     position: absolute;
 
-    z-index: 55;
+    z-index: 65;
 
     left: 50%;
     bottom: 16%;
@@ -678,16 +574,15 @@ body {
     border-radius: 20px;
 
     background:
-        rgba(73,26,5,.92);
+        rgba(73, 26, 5, 0.92);
 
     color: #fff0af;
 
-    font-size:
-        clamp(
-            11px,
-            1.1vw,
-            22px
-        );
+    font-size: clamp(
+        11px,
+        1.1vw,
+        22px
+    );
 
     font-weight: 900;
 
@@ -697,7 +592,7 @@ body {
 
     pointer-events: none;
 
-    transition: opacity .2s;
+    transition: opacity 0.2s;
 }
 
 #message.show {
@@ -705,14 +600,55 @@ body {
 }
 
 
-/* =====================================================
+/* =========================================
+   HIT FLASH
+========================================= */
+
+#scene.hitFlash::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+
+    top: 4.5%;
+
+    height: 43%;
+
+    z-index: 10;
+
+    background: var(--hit-color);
+
+    pointer-events: none;
+
+    animation: skyHitFlash 0.55s ease-out;
+}
+
+@keyframes skyHitFlash {
+
+    0% {
+        opacity: 0;
+    }
+
+    25% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+
+/* =========================================
    SOUND
-===================================================== */
+========================================= */
 
 #soundButton {
     position: absolute;
 
-    z-index: 70;
+    z-index: 90;
 
     right: 1.2%;
     bottom: 1.8%;
@@ -720,13 +656,12 @@ body {
     width: 42px;
     height: 42px;
 
-    border:
-        2px solid #f6c85f;
+    border: 2px solid #f6c85f;
 
     border-radius: 50%;
 
     background:
-        rgba(85,30,5,.9);
+        rgba(85, 30, 5, 0.9);
 
     color: white;
 
@@ -736,9 +671,9 @@ body {
 }
 
 
-/* =====================================================
+/* =========================================
    GAME OVER
-===================================================== */
+========================================= */
 
 #gameOver {
     position: absolute;
@@ -750,25 +685,24 @@ body {
     display: none;
 
     align-items: center;
+
     justify-content: center;
 
     background:
-        rgba(25,5,0,.72);
+        rgba(25, 5, 0, 0.72);
 }
 
 .gameOverBox {
-    min-width:
-        min(
-            75%,
-            420px
-        );
+    min-width: min(
+        75%,
+        420px
+    );
 
     padding: 28px;
 
     text-align: center;
 
-    border:
-        4px solid #ffd269;
+    border: 4px solid #ffd269;
 
     border-radius: 22px;
 
@@ -779,16 +713,15 @@ body {
         );
 
     box-shadow:
-        0 12px 30px rgba(0,0,0,.6);
+        0 12px 30px rgba(0, 0, 0, 0.6);
 }
 
 .gameOverTitle {
-    font-size:
-        clamp(
-            34px,
-            4.5vw,
-            65px
-        );
+    font-size: clamp(
+        34px,
+        4.5vw,
+        65px
+    );
 
     font-weight: 1000;
 
@@ -816,8 +749,7 @@ body {
 
     padding: 10px 28px;
 
-    border:
-        3px solid #71300b;
+    border: 3px solid #71300b;
 
     border-radius: 13px;
 
@@ -833,9 +765,9 @@ body {
 }
 
 
-/* =====================================================
+/* =========================================
    MOBILE
-===================================================== */
+========================================= */
 
 @media (max-width: 700px) {
 
