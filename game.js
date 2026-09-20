@@ -8,7 +8,8 @@
    ELEMENTS
 ========================================================= */
 
-const scene = document.getElementById("scene");
+const scene =
+    document.getElementById("scene");
 
 const player =
     document.getElementById("player");
@@ -87,502 +88,6 @@ const finalScore =
 
 const heartsLost =
     document.getElementById("heartsLost");
-
-
-/* =========================================================
-   BACKGROUND SYSTEM
-========================================================= */
-
-let backgroundCanvas = null;
-
-let backgroundContext = null;
-
-let originalBackgroundData = null;
-
-let backgroundWidth = 0;
-
-let backgroundHeight = 0;
-
-let currentBackgroundStage = -1;
-
-
-/*
-   Colours used after every 500 meters.
-
-   0 = original blue background
-   1 = pink
-   2 = green
-   3 = purple
-   4 = orange
-   5 = golden
-   6 = pink
-*/
-
-const backgroundColours = [
-
-    null,
-
-    [245, 110, 175],
-
-    [75, 185, 115],
-
-    [155, 90, 220],
-
-    [245, 155, 55],
-
-    [225, 190, 65],
-
-    [220, 90, 155]
-
-];
-
-
-/* =========================================================
-   CREATE BACKGROUND CANVAS
-========================================================= */
-
-function createBackground() {
-
-    const image =
-        new Image();
-
-    image.src =
-        "festival-game-bg.png";
-
-    image.onload = function () {
-
-        backgroundWidth =
-            image.naturalWidth;
-
-        backgroundHeight =
-            image.naturalHeight;
-
-        backgroundCanvas =
-            document.createElement(
-                "canvas"
-            );
-
-        backgroundCanvas.id =
-            "backgroundCanvas";
-
-        backgroundCanvas.width =
-            backgroundWidth;
-
-        backgroundCanvas.height =
-            backgroundHeight;
-
-        backgroundContext =
-            backgroundCanvas.getContext(
-                "2d"
-            );
-
-        /*
-           Draw original background once.
-        */
-
-        backgroundContext.drawImage(
-            image,
-            0,
-            0,
-            backgroundWidth,
-            backgroundHeight
-        );
-
-        /*
-           Save the untouched background.
-        */
-
-        originalBackgroundData =
-            backgroundContext.getImageData(
-                0,
-                0,
-                backgroundWidth,
-                backgroundHeight
-            );
-
-        /*
-           Put canvas behind the game world.
-        */
-
-        scene.insertBefore(
-            backgroundCanvas,
-            scene.firstChild
-        );
-
-        /*
-           Show original background.
-        */
-
-        drawBackgroundColour(0);
-    };
-
-    image.onerror = function () {
-
-        console.error(
-            "festival-game-bg.png could not be loaded."
-        );
-
-    };
-}
-
-
-/* =========================================================
-   PROTECTED UI AREA
-   These areas remain exactly as they are.
-========================================================= */
-
-function isProtectedArea(
-    x,
-    y
-) {
-
-    const px =
-        x / backgroundWidth * 100;
-
-    const py =
-        y / backgroundHeight * 100;
-
-
-    /*
-       Top-left title
-    */
-
-    if (
-        px >= 2 &&
-        px <= 22.5 &&
-        py >= 6 &&
-        py <= 16
-    ) {
-        return true;
-    }
-
-
-    /*
-       Top-right title
-    */
-
-    if (
-        px >= 78 &&
-        px <= 98 &&
-        py >= 6 &&
-        py <= 16
-    ) {
-        return true;
-    }
-
-
-    /*
-       Main HUD row
-    */
-
-    if (
-        py >= 20.5 &&
-        py <= 31.5
-    ) {
-        return true;
-    }
-
-
-    /*
-       Mission panel
-    */
-
-    if (
-        px >= 0 &&
-        px <= 30 &&
-        py >= 31 &&
-        py <= 46
-    ) {
-        return true;
-    }
-
-
-    /*
-       Ganesh Darshan panel
-    */
-
-    if (
-        px >= 56 &&
-        px <= 75 &&
-        py >= 33 &&
-        py <= 47
-    ) {
-        return true;
-    }
-
-
-    /*
-       Offerings panel
-    */
-
-    if (
-        px >= 74 &&
-        px <= 100 &&
-        py >= 31 &&
-        py <= 47
-    ) {
-        return true;
-    }
-
-
-    return false;
-}
-
-
-/* =========================================================
-   DETECT SKY PIXEL
-========================================================= */
-
-function isSkyPixel(
-    r,
-    g,
-    b
-) {
-
-    /*
-       Blue/cyan sky detection.
-
-       This prevents the wall, road,
-       flowers, Ganesh image, etc.
-       from being recoloured.
-    */
-
-    return (
-        b > 145 &&
-        g > 115 &&
-        b > r * 1.28 &&
-        g > r * 1.18
-    );
-}
-
-
-/* =========================================================
-   DRAW BACKGROUND COLOUR
-========================================================= */
-
-function drawBackgroundColour(
-    stage
-) {
-
-    if (
-        !backgroundContext ||
-        !originalBackgroundData
-    ) {
-        return;
-    }
-
-
-    /*
-       Stage 0 = completely original
-       background.
-    */
-
-    if (stage === 0) {
-
-        backgroundContext.putImageData(
-            originalBackgroundData,
-            0,
-            0
-        );
-
-        currentBackgroundStage =
-            0;
-
-        return;
-    }
-
-
-    const colour =
-        backgroundColours[
-            stage %
-            backgroundColours.length
-        ];
-
-
-    if (!colour) {
-        return;
-    }
-
-
-    /*
-       Make a fresh copy of the
-       original background.
-
-       This means colours never
-       accumulate from previous stages.
-    */
-
-    const original =
-        originalBackgroundData.data;
-
-    const output =
-        new Uint8ClampedArray(
-            original
-        );
-
-
-    for (
-        let y = 0;
-        y < backgroundHeight;
-        y++
-    ) {
-
-        /*
-           Only sky area.
-        */
-
-        if (
-            y >
-            backgroundHeight * 0.49
-        ) {
-            continue;
-        }
-
-
-        for (
-            let x = 0;
-            x < backgroundWidth;
-            x++
-        ) {
-
-            /*
-               Never recolour the
-               baked HUD/panels.
-            */
-
-            if (
-                isProtectedArea(
-                    x,
-                    y
-                )
-            ) {
-                continue;
-            }
-
-
-            const index =
-                (
-                    y *
-                    backgroundWidth +
-                    x
-                ) * 4;
-
-
-            const r =
-                original[index];
-
-            const g =
-                original[index + 1];
-
-            const b =
-                original[index + 2];
-
-            const a =
-                original[index + 3];
-
-
-            /*
-               Only blue/cyan pixels
-               are changed.
-            */
-
-            if (
-                !isSkyPixel(
-                    r,
-                    g,
-                    b
-                )
-            ) {
-                continue;
-            }
-
-
-            /*
-               Strong enough to clearly
-               see the colour change,
-               while keeping the sky
-               texture/clouds.
-            */
-
-            const amount =
-                0.68;
-
-
-            output[index] =
-                r * (1 - amount) +
-                colour[0] * amount;
-
-            output[index + 1] =
-                g * (1 - amount) +
-                colour[1] * amount;
-
-            output[index + 2] =
-                b * (1 - amount) +
-                colour[2] * amount;
-
-            output[index + 3] =
-                a;
-        }
-    }
-
-
-    const newImage =
-        new ImageData(
-            output,
-            backgroundWidth,
-            backgroundHeight
-        );
-
-
-    backgroundContext.putImageData(
-        newImage,
-        0,
-        0
-    );
-
-
-    currentBackgroundStage =
-        stage;
-}
-
-
-/* =========================================================
-   UPDATE BACKGROUND
-========================================================= */
-
-function updateBackground() {
-
-    if (
-        !backgroundContext ||
-        !originalBackgroundData
-    ) {
-        return;
-    }
-
-
-    /*
-       EXACTLY one colour change
-       every 500 meters.
-    */
-
-    const stage =
-        Math.floor(
-            distance / 500
-        );
-
-
-    if (
-        stage ===
-        currentBackgroundStage
-    ) {
-        return;
-    }
-
-
-    drawBackgroundColour(
-        stage
-    );
-}
 
 
 /* =========================================================
@@ -679,6 +184,547 @@ const collectibleTypes = [
 
 
 /* =========================================================
+   BACKGROUND COLOUR SYSTEM
+========================================================= */
+
+/*
+   IMPORTANT:
+
+   There is NO overlay.
+   There is NO extra canvas on the screen.
+
+   The actual background image itself is processed
+   and then placed back into #scene.
+
+   Only blue sky pixels are changed.
+*/
+
+let backgroundImage =
+    new Image();
+
+let backgroundCanvas =
+    document.createElement("canvas");
+
+let backgroundContext =
+    backgroundCanvas.getContext("2d");
+
+let originalBackground =
+    null;
+
+let backgroundReady =
+    false;
+
+let currentBackgroundStage =
+    0;
+
+
+/*
+   Colour for each 500 m.
+
+   0 = original blue
+   1 = pink
+   2 = green
+   3 = purple
+   4 = orange
+   5 = golden
+   6 = rose
+*/
+
+const skyColours = [
+
+    null,
+
+    [245, 110, 175],
+
+    [75, 185, 115],
+
+    [155, 90, 220],
+
+    [245, 155, 55],
+
+    [225, 190, 65],
+
+    [220, 90, 155]
+
+];
+
+
+/* =========================================================
+   LOAD ORIGINAL BACKGROUND
+========================================================= */
+
+function loadBackground() {
+
+    backgroundImage.onload =
+        function () {
+
+            backgroundCanvas.width =
+                backgroundImage.naturalWidth;
+
+            backgroundCanvas.height =
+                backgroundImage.naturalHeight;
+
+
+            /*
+               Draw the ORIGINAL image.
+            */
+
+            backgroundContext.drawImage(
+                backgroundImage,
+                0,
+                0,
+                backgroundCanvas.width,
+                backgroundCanvas.height
+            );
+
+
+            /*
+               Save the original pixels.
+            */
+
+            originalBackground =
+                backgroundContext.getImageData(
+                    0,
+                    0,
+                    backgroundCanvas.width,
+                    backgroundCanvas.height
+                );
+
+
+            backgroundReady = true;
+
+
+            /*
+               Keep the original image
+               until 500 m.
+            */
+
+            scene.style.backgroundImage =
+                'url("festival-game-bg.png")';
+
+
+            currentBackgroundStage =
+                0;
+        };
+
+
+    backgroundImage.onerror =
+        function () {
+
+            console.error(
+                "festival-game-bg.png could not be loaded."
+            );
+
+        };
+
+
+    backgroundImage.src =
+        "festival-game-bg.png";
+}
+
+
+/* =========================================================
+   CHECK IF PIXEL IS SKY
+========================================================= */
+
+function isSkyPixel(
+    r,
+    g,
+    b
+) {
+
+    /*
+       Only blue/cyan colours.
+
+       This avoids recolouring
+       brown wall and grey road.
+    */
+
+    return (
+        b > 145 &&
+        g > 125 &&
+        b > r * 1.30 &&
+        g > r * 1.18
+    );
+}
+
+
+/* =========================================================
+   CHECK HUD PROTECTION
+========================================================= */
+
+function isProtectedArea(
+    x,
+    y
+) {
+
+    const width =
+        backgroundCanvas.width;
+
+    const height =
+        backgroundCanvas.height;
+
+
+    const px =
+        (x / width) * 100;
+
+    const py =
+        (y / height) * 100;
+
+
+    /*
+       Top-left festival title
+    */
+
+    if (
+        px >= 2 &&
+        px <= 23 &&
+        py >= 6 &&
+        py <= 17
+    ) {
+
+        return true;
+    }
+
+
+    /*
+       Top-right Ganesh title
+    */
+
+    if (
+        px >= 77 &&
+        px <= 99 &&
+        py >= 6 &&
+        py <= 17
+    ) {
+
+        return true;
+    }
+
+
+    /*
+       HUD row
+    */
+
+    if (
+        py >= 20 &&
+        py <= 32
+    ) {
+
+        return true;
+    }
+
+
+    /*
+       Mission panel
+    */
+
+    if (
+        px >= 0 &&
+        px <= 31 &&
+        py >= 31 &&
+        py <= 47
+    ) {
+
+        return true;
+    }
+
+
+    /*
+       Ganesh Darshan panel
+    */
+
+    if (
+        px >= 55 &&
+        px <= 76 &&
+        py >= 32 &&
+        py <= 48
+    ) {
+
+        return true;
+    }
+
+
+    /*
+       Offerings panel
+    */
+
+    if (
+        px >= 73 &&
+        px <= 100 &&
+        py >= 31 &&
+        py <= 48
+    ) {
+
+        return true;
+    }
+
+
+    return false;
+}
+
+
+/* =========================================================
+   CREATE COLOURED BACKGROUND
+========================================================= */
+
+function createColouredBackground(
+    stage
+) {
+
+    if (
+        !backgroundReady ||
+        !originalBackground
+    ) {
+
+        return;
+    }
+
+
+    /*
+       Stage 0:
+       original image only.
+    */
+
+    if (
+        stage === 0
+    ) {
+
+        scene.style.backgroundImage =
+            'url("festival-game-bg.png")';
+
+        currentBackgroundStage =
+            0;
+
+        return;
+    }
+
+
+    const colour =
+        skyColours[
+            stage %
+            skyColours.length
+        ];
+
+
+    if (!colour) {
+        return;
+    }
+
+
+    const original =
+        originalBackground.data;
+
+
+    /*
+       Make a completely new copy.
+
+       This prevents colours from
+       stacking on top of each other.
+    */
+
+    const pixels =
+        new Uint8ClampedArray(
+            original
+        );
+
+
+    const width =
+        backgroundCanvas.width;
+
+    const height =
+        backgroundCanvas.height;
+
+
+    for (
+        let y = 0;
+        y < height;
+        y++
+    ) {
+
+        /*
+           Only upper sky.
+        */
+
+        if (
+            y >
+            height * 0.48
+        ) {
+
+            continue;
+        }
+
+
+        for (
+            let x = 0;
+            x < width;
+            x++
+        ) {
+
+            /*
+               Protect all HUD areas.
+            */
+
+            if (
+                isProtectedArea(
+                    x,
+                    y
+                )
+            ) {
+
+                continue;
+            }
+
+
+            const index =
+                (
+                    y * width + x
+                ) * 4;
+
+
+            const r =
+                original[index];
+
+            const g =
+                original[index + 1];
+
+            const b =
+                original[index + 2];
+
+
+            /*
+               Only actual blue sky.
+            */
+
+            if (
+                !isSkyPixel(
+                    r,
+                    g,
+                    b
+                )
+            ) {
+
+                continue;
+            }
+
+
+            /*
+               Change the sky colour.
+
+               The original brightness and
+               texture are retained.
+            */
+
+            const amount =
+                0.60;
+
+
+            pixels[index] =
+                Math.round(
+                    r * (1 - amount) +
+                    colour[0] * amount
+                );
+
+
+            pixels[index + 1] =
+                Math.round(
+                    g * (1 - amount) +
+                    colour[1] * amount
+                );
+
+
+            pixels[index + 2] =
+                Math.round(
+                    b * (1 - amount) +
+                    colour[2] * amount
+                );
+        }
+    }
+
+
+    /*
+       Put the newly coloured image
+       into the OFFSCREEN canvas.
+    */
+
+    backgroundContext.putImageData(
+        new ImageData(
+            pixels,
+            width,
+            height
+        ),
+        0,
+        0
+    );
+
+
+    /*
+       IMPORTANT:
+
+       The canvas is NOT added to the page.
+
+       Instead, the actual #scene
+       background is changed to the
+       processed image.
+    */
+
+    const imageURL =
+        backgroundCanvas.toDataURL(
+            "image/png"
+        );
+
+
+    scene.style.backgroundImage =
+        `url("${imageURL}")`;
+
+
+    currentBackgroundStage =
+        stage;
+}
+
+
+/* =========================================================
+   UPDATE BACKGROUND
+========================================================= */
+
+function updateBackgroundColour() {
+
+    if (!backgroundReady) {
+        return;
+    }
+
+
+    /*
+       EXACTLY every 500 meters.
+    */
+
+    const stage =
+        Math.floor(
+            distance / 500
+        );
+
+
+    /*
+       Do nothing until the next
+       500 meter boundary.
+    */
+
+    if (
+        stage ===
+        currentBackgroundStage
+    ) {
+
+        return;
+    }
+
+
+    createColouredBackground(
+        stage
+    );
+}
+
+
+/* =========================================================
    RESET GAME
 ========================================================= */
 
@@ -688,37 +734,15 @@ function resetGame() {
         animationId
     );
 
+
     gameRunning = false;
 
     paused = false;
 
     lastTime = 0;
 
+
     distance = 0;
-
-    /*
-       Reset background to
-       original blue.
-    */
-
-    currentBackgroundStage =
-        -1;
-
-    if (
-        backgroundContext &&
-        originalBackgroundData
-    ) {
-
-        backgroundContext.putImageData(
-            originalBackgroundData,
-            0,
-            0
-        );
-
-        currentBackgroundStage =
-            0;
-    }
-
 
     score = 0;
 
@@ -728,11 +752,13 @@ function resetGame() {
 
     speed = 0.52;
 
+
     playerY = 0;
 
     playerVelocity = 0;
 
     isJumping = false;
+
 
     objectId = 0;
 
@@ -740,7 +766,9 @@ function resetGame() {
 
     obstacleCount = 0;
 
+
     missionProgress = 0;
+
 
     modaks = 0;
 
@@ -750,27 +778,50 @@ function resetGame() {
 
     diyas = 0;
 
+
     obstacleCooldown = 0;
+
 
     objects.length = 0;
 
-    objectsContainer.innerHTML = "";
+    objectsContainer.innerHTML =
+        "";
+
 
     player.style.transform =
         "translateY(0px)";
 
+
     continueButton.style.display =
         "none";
+
 
     gameOver.style.display =
         "none";
 
+
     startScreen.style.display =
         "flex";
+
 
     message.classList.remove(
         "show"
     );
+
+
+    /*
+       Always return to the
+       original blue background
+       when restarting.
+    */
+
+    currentBackgroundStage =
+        0;
+
+
+    scene.style.backgroundImage =
+        'url("festival-game-bg.png")';
+
 
     updateHUD();
 }
@@ -786,25 +837,32 @@ function startGame() {
         return;
     }
 
+
     gameRunning = true;
 
     paused = false;
 
+
     startScreen.style.display =
         "none";
+
 
     gameOver.style.display =
         "none";
 
+
     continueButton.style.display =
         "none";
+
 
     lastTime =
         performance.now();
 
+
     showMessage(
         "Ganpati Bappa Morya! 🐘"
     );
+
 
     animationId =
         requestAnimationFrame(
@@ -817,7 +875,9 @@ function startGame() {
    GAME LOOP
 ========================================================= */
 
-function gameLoop(time) {
+function gameLoop(
+    time
+) {
 
     if (!gameRunning) {
         return;
@@ -846,11 +906,23 @@ function gameLoop(time) {
     lastTime = time;
 
 
-    updatePlayer(delta);
+    updatePlayer(
+        delta
+    );
 
-    updateWorld(delta);
 
-    updateBackground();
+    updateWorld(
+        delta
+    );
+
+
+    /*
+       This only changes the
+       background at 500 m boundaries.
+    */
+
+    updateBackgroundColour();
+
 
     updateHUD();
 
@@ -872,13 +944,16 @@ function jump() {
         return;
     }
 
+
     if (paused) {
         return;
     }
 
+
     if (isJumping) {
         return;
     }
+
 
     isJumping = true;
 
@@ -890,7 +965,9 @@ function jump() {
    PLAYER PHYSICS
 ========================================================= */
 
-function updatePlayer(delta) {
+function updatePlayer(
+    delta
+) {
 
     if (
         !isJumping &&
@@ -916,7 +993,9 @@ function updatePlayer(delta) {
         playerVelocity * delta;
 
 
-    if (playerY <= 0) {
+    if (
+        playerY <= 0
+    ) {
 
         playerY = 0;
 
@@ -935,7 +1014,9 @@ function updatePlayer(delta) {
    WORLD UPDATE
 ========================================================= */
 
-function updateWorld(delta) {
+function updateWorld(
+    delta
+) {
 
     distance +=
         speed *
@@ -955,7 +1036,9 @@ function updateWorld(delta) {
         delta;
 
 
-    moveObjects(delta);
+    moveObjects(
+        delta
+    );
 
 
     if (
@@ -966,6 +1049,7 @@ function updateWorld(delta) {
 
         spawnSection();
 
+
         nextSpawnDistance =
             distance +
             randomBetween(
@@ -973,14 +1057,15 @@ function updateWorld(delta) {
                 250
             );
 
-        obstacleCooldown = 20;
+
+        obstacleCooldown =
+            20;
     }
 }
 
 
 /* =========================================================
    SPAWN SECTION
-   5–6 COLLECTIBLES FOR EACH OBSTACLE
 ========================================================= */
 
 function spawnSection() {
@@ -988,7 +1073,8 @@ function spawnSection() {
     obstacleCount++;
 
 
-    const baseX = 104;
+    const baseX =
+        104;
 
 
     const collectibleCount =
@@ -1033,10 +1119,6 @@ function spawnSection() {
         );
     }
 
-
-    /*
-       ONE OBSTACLE
-    */
 
     const obstacleX =
         baseX +
@@ -1118,7 +1200,10 @@ function createObject(
     };
 
 
-    objects.push(object);
+    objects.push(
+        object
+    );
+
 
     objectsContainer.appendChild(
         element
@@ -1130,7 +1215,9 @@ function createObject(
    MOVE OBJECTS
 ========================================================= */
 
-function moveObjects(delta) {
+function moveObjects(
+    delta
+) {
 
     const movement =
         speed *
@@ -1139,7 +1226,8 @@ function moveObjects(delta) {
 
 
     for (
-        let i = objects.length - 1;
+        let i =
+            objects.length - 1;
         i >= 0;
         i--
     ) {
@@ -1156,13 +1244,11 @@ function moveObjects(delta) {
             `${object.x}%`;
 
 
-        /*
-           COLLISION
-        */
-
         if (
             !object.collected &&
-            checkCollision(object)
+            checkCollision(
+                object
+            )
         ) {
 
             if (
@@ -1170,18 +1256,18 @@ function moveObjects(delta) {
                 "rock"
             ) {
 
-                hitObstacle(object);
+                hitObstacle(
+                    object
+                );
 
             } else {
 
-                collectItem(object);
+                collectItem(
+                    object
+                );
             }
         }
 
-
-        /*
-           REMOVE OLD OBJECTS
-        */
 
         if (
             object.x < -12
@@ -1215,7 +1301,8 @@ function checkCollision(
             .getBoundingClientRect();
 
 
-    const padding = 9;
+    const padding =
+        9;
 
 
     return !(
@@ -1256,11 +1343,11 @@ function hitObstacle(
 
     lives--;
 
-
     combo = 1;
 
 
-    obstacleCooldown = 55;
+    obstacleCooldown =
+        55;
 
 
     flashHit();
@@ -1324,6 +1411,7 @@ function collectItem(
         object.type ===
         "modak"
     ) {
+
         modaks++;
     }
 
@@ -1332,6 +1420,7 @@ function collectItem(
         object.type ===
         "durva"
     ) {
+
         durvas++;
     }
 
@@ -1340,6 +1429,7 @@ function collectItem(
         object.type ===
         "flower"
     ) {
+
         flowers++;
     }
 
@@ -1348,6 +1438,7 @@ function collectItem(
         object.type ===
         "diya"
     ) {
+
         diyas++;
     }
 
@@ -1393,13 +1484,16 @@ function flashHit() {
     );
 
 
-    setTimeout(() => {
+    setTimeout(
+        () => {
 
-        scene.classList.remove(
-            "hitFlash"
-        );
+            scene.classList.remove(
+                "hitFlash"
+            );
 
-    }, 600);
+        },
+        600
+    );
 }
 
 
@@ -1584,13 +1678,16 @@ function showMessage(
 
 
     messageTimer =
-        setTimeout(() => {
+        setTimeout(
+            () => {
 
-            message.classList.remove(
-                "show"
-            );
+                message.classList.remove(
+                    "show"
+                );
 
-        }, 1000);
+            },
+            1000
+        );
 }
 
 
@@ -1653,42 +1750,35 @@ startButton.addEventListener(
     startGame
 );
 
-
 jumpButton.addEventListener(
     "click",
     jump
 );
-
 
 pauseButton.addEventListener(
     "click",
     pauseGame
 );
 
-
 continueButton.addEventListener(
     "click",
     continueGame
 );
-
 
 restartButton.addEventListener(
     "click",
     restartGame
 );
 
-
 mapButton.addEventListener(
     "click",
     showMap
 );
 
-
 soundButton.addEventListener(
     "click",
     toggleSound
 );
-
 
 gameOverRestart.addEventListener(
     "click",
@@ -1794,6 +1884,6 @@ playerImage.addEventListener(
    INITIAL SETUP
 ========================================================= */
 
-createBackground();
+loadBackground();
 
 resetGame();
