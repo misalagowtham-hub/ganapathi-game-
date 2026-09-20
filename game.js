@@ -271,14 +271,13 @@ function createRoadFlowers() {
 function updateSkyColor() {
 
     /*
-       Every 500 metres the sky changes.
+       0 - 499 m      BLUE
+       500 - 999 m    PINK
+       1000 - 1499 m  GREEN
+       1500 - 1999 m  PURPLE
+       2000 - 2499 m  ORANGE
 
-       0 - 499   = BLUE
-       500 - 999  = PINK
-       1000-1499  = GREEN
-       1500-1999  = PURPLE
-       2000-2499  = ORANGE
-       2500+      = BLUE and repeats
+       Then it repeats.
     */
 
     const stage =
@@ -287,51 +286,47 @@ function updateSkyColor() {
         ) % 5;
 
 
-    scene.classList.remove(
-        "sky-blue",
-        "sky-pink",
-        "sky-green",
-        "sky-purple",
-        "sky-orange"
-    );
-
-
     if (stage === 0) {
 
-        scene.classList.add(
-            "sky-blue"
+        scene.style.setProperty(
+            "--sky-tint",
+            "rgba(0, 0, 0, 0)"
         );
 
     }
 
     else if (stage === 1) {
 
-        scene.classList.add(
-            "sky-pink"
+        scene.style.setProperty(
+            "--sky-tint",
+            "rgba(255, 55, 150, 0.48)"
         );
 
     }
 
     else if (stage === 2) {
 
-        scene.classList.add(
-            "sky-green"
+        scene.style.setProperty(
+            "--sky-tint",
+            "rgba(35, 210, 100, 0.48)"
         );
 
     }
 
     else if (stage === 3) {
 
-        scene.classList.add(
-            "sky-purple"
+        scene.style.setProperty(
+            "--sky-tint",
+            "rgba(145, 55, 255, 0.50)"
         );
 
     }
 
     else if (stage === 4) {
 
-        scene.classList.add(
-            "sky-orange"
+        scene.style.setProperty(
+            "--sky-tint",
+            "rgba(255, 145, 20, 0.48)"
         );
     }
 }
@@ -407,7 +402,12 @@ function resetGame() {
         "show"
     );
 
-    updateSkyColor();
+    /* RESET SKY TO BLUE */
+
+    scene.style.setProperty(
+        "--sky-tint",
+        "rgba(0, 0, 0, 0)"
+    );
 
     updateHUD();
 }
@@ -587,7 +587,10 @@ function updateWorld(delta) {
     moveObjects(delta);
 
 
-    /* ONLY DISTANCE CONTROLS SKY COLOUR */
+    /* ================================================
+       ONLY NEW FEATURE:
+       CHANGE SKY COLOUR BY DISTANCE
+       ================================================ */
 
     updateSkyColor();
 
@@ -1131,7 +1134,7 @@ function showMap() {
 
 
 /* =========================================================
-   SOUND
+   SOUND BUTTON
 ========================================================= */
 
 function toggleSound() {
