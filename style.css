@@ -37,13 +37,12 @@ body {
     overflow: hidden;
     user-select: none;
     touch-action: manipulation;
-
-    --hit-color: rgba(255, 60, 40, 0.20);
 }
 
 
 /* =====================================================
-   COVER TWO BAKED-IN MUSHAKS
+   BACKGROUND COVER
+   HIDES THE BAKED-IN MUSHAKS
 ===================================================== */
 
 #scene::before {
@@ -133,6 +132,7 @@ body {
 
 #objects {
     position: absolute;
+
     inset: 0;
 
     overflow: hidden;
@@ -256,7 +256,9 @@ body {
 }
 
 
-/* DISTANCE */
+/* =====================================================
+   DISTANCE
+===================================================== */
 
 .distanceValue {
     left: 34.8%;
@@ -272,7 +274,9 @@ body {
 }
 
 
-/* SCORE */
+/* =====================================================
+   SCORE
+===================================================== */
 
 .scoreValue {
     left: 47.6%;
@@ -288,7 +292,9 @@ body {
 }
 
 
-/* COMBO */
+/* =====================================================
+   COMBO
+===================================================== */
 
 .comboValue {
     left: 60.9%;
@@ -304,7 +310,9 @@ body {
 }
 
 
-/* LIVES */
+/* =====================================================
+   LIVES
+===================================================== */
 
 .livesValue {
     left: 73.6%;
@@ -322,7 +330,9 @@ body {
 }
 
 
-/* SPEED */
+/* =====================================================
+   SPEED
+===================================================== */
 
 .speedValue {
     left: 86.8%;
@@ -339,7 +349,7 @@ body {
 
 
 /* =====================================================
-   FESTIVAL MISSION
+   MISSION
 ===================================================== */
 
 #missionValue {
@@ -449,9 +459,16 @@ body {
 
     justify-content: center;
 
+    padding: 0;
+
     background:
         rgba(30, 8, 0, 0.18);
 }
+
+
+/* =====================================================
+   START BOX
+===================================================== */
 
 #startScreen::before {
     content: "";
@@ -483,6 +500,11 @@ body {
     z-index: -1;
 }
 
+
+/* =====================================================
+   START TITLE
+===================================================== */
+
 .startTitle {
     color: #8a2d08;
 
@@ -505,6 +527,11 @@ body {
     max-width: 90%;
 }
 
+
+/* =====================================================
+   START SUBTITLE
+===================================================== */
+
 .startSubtitle {
     margin-top: 10px;
 
@@ -523,6 +550,11 @@ body {
     text-shadow:
         0 1px 0 white;
 }
+
+
+/* =====================================================
+   START BUTTON
+===================================================== */
 
 #startButton {
     margin-top: 22px;
@@ -584,6 +616,9 @@ body {
     touch-action: manipulation;
 }
 
+
+/* JUMP */
+
 #jumpButton {
     left: 31.5%;
     top: 89.3%;
@@ -591,6 +626,9 @@ body {
     width: 8.2%;
     height: 8%;
 }
+
+
+/* PAUSE */
 
 #pauseButton {
     left: 40%;
@@ -600,6 +638,9 @@ body {
     height: 8%;
 }
 
+
+/* RESTART */
+
 #restartButton {
     left: 48.7%;
     top: 89.3%;
@@ -607,6 +648,9 @@ body {
     width: 9.2%;
     height: 8%;
 }
+
+
+/* MAP */
 
 #mapButton {
     left: 58.3%;
@@ -708,11 +752,11 @@ body {
 
 
 /* =====================================================
-   HIT COLOR
+   DISTANCE BASED SKY COLOUR
    ONLY THE BLUE SKY AREA
 ===================================================== */
 
-#scene.hitFlash::after {
+#scene::after {
     content: "";
 
     position: absolute;
@@ -721,52 +765,77 @@ body {
     right: 0;
 
     top: 5.5%;
-
     height: 44%;
 
     z-index: 10;
 
     pointer-events: none;
 
-    background:
-        rgba(0, 140, 255, 0.35);
+    opacity: 0;
 
-    animation:
-        colorfulSkyHit 1.2s linear;
+    transition:
+        background 1.5s ease,
+        opacity 1.5s ease;
 }
 
 
-@keyframes colorfulSkyHit {
+/* =====================================================
+   PINK
+===================================================== */
 
-    0% {
-        background:
-            rgba(0, 140, 255, 0.35);
-    }
+#scene.sky-pink::after {
+    background:
+        rgba(255, 70, 150, 0.42);
 
-    20% {
-        background:
-            rgba(255, 60, 150, 0.35);
-    }
+    opacity: 1;
+}
 
-    40% {
-        background:
-            rgba(0, 220, 120, 0.35);
-    }
 
-    60% {
-        background:
-            rgba(170, 70, 255, 0.35);
-    }
+/* =====================================================
+   GREEN
+===================================================== */
 
-    80% {
-        background:
-            rgba(255, 180, 0, 0.35);
-    }
+#scene.sky-green::after {
+    background:
+        rgba(40, 220, 120, 0.42);
 
-    100% {
-        background:
-            rgba(0, 140, 255, 0);
-    }
+    opacity: 1;
+}
+
+
+/* =====================================================
+   PURPLE
+===================================================== */
+
+#scene.sky-purple::after {
+    background:
+        rgba(160, 70, 255, 0.42);
+
+    opacity: 1;
+}
+
+
+/* =====================================================
+   ORANGE
+===================================================== */
+
+#scene.sky-orange::after {
+    background:
+        rgba(255, 170, 20, 0.42);
+
+    opacity: 1;
+}
+
+
+/* =====================================================
+   BLUE
+===================================================== */
+
+#scene.sky-blue::after {
+    background:
+        rgba(0, 140, 255, 0.10);
+
+    opacity: 1;
 }
 
 
