@@ -26,18 +26,22 @@ body {
 
 #scene {
     position: relative;
+
     width: 100%;
     aspect-ratio: 1821 / 864;
 
     /*
        IMPORTANT:
-       The background image is now drawn by game.js.
-       This prevents a visible colour overlay.
+       The game background remains the actual
+       festival-game-bg.png image.
+
+       game.js changes this background image
+       itself when distance reaches 500 m.
     */
-    background-color: #2bb8df;
-    background-image: none;
-    background-position: center;
+    background-image: url("festival-game-bg.png");
+
     background-size: 100% 100%;
+    background-position: center;
     background-repeat: no-repeat;
 
     overflow: hidden;
@@ -45,27 +49,6 @@ body {
     touch-action: manipulation;
 
     --hit-color: rgba(255, 60, 40, 0.20);
-}
-
-
-/* =====================================================
-   BACKGROUND CANVAS
-   This is the actual game background.
-   It is NOT a colour overlay.
-===================================================== */
-
-#backgroundCanvas {
-    position: absolute;
-
-    left: 0;
-    top: 0;
-
-    width: 100%;
-    height: 100%;
-
-    z-index: 1;
-
-    pointer-events: none;
 }
 
 
@@ -103,6 +86,7 @@ body {
 
     border-radius: 0;
     box-shadow: none;
+
     pointer-events: none;
 }
 
@@ -116,6 +100,7 @@ body {
     inset: 0;
 
     overflow: hidden;
+
     pointer-events: none;
 
     z-index: 20;
@@ -136,12 +121,14 @@ body {
     height: 13.5%;
 
     display: flex;
+
     align-items: flex-end;
     justify-content: center;
 
     z-index: 30;
 
     will-change: transform;
+
     overflow: visible;
 }
 
@@ -166,6 +153,7 @@ body {
     inset: 0;
 
     overflow: hidden;
+
     pointer-events: none;
 }
 
@@ -173,6 +161,7 @@ body {
     position: absolute;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
@@ -238,6 +227,7 @@ body {
     color: #6d2a0b;
 
     font-weight: 1000;
+
     line-height: 1;
 
     text-align: center;
@@ -427,6 +417,7 @@ body {
     z-index: 80;
 
     display: flex;
+
     flex-direction: column;
 
     align-items: center;
@@ -871,11 +862,9 @@ body {
 
     #startScreen::before {
         width: 82%;
-
         left: 9%;
 
         height: 42%;
-
         top: 29%;
     }
 
