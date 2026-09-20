@@ -1,6 +1,5 @@
 /* =========================================================
    MUSHAK: THE FESTIVAL RUN
-   Ganesh Chaturthi Endless Runner
 ========================================================= */
 
 
@@ -8,86 +7,43 @@
    ELEMENTS
 ========================================================= */
 
-const scene =
-    document.getElementById("scene");
+const scene = document.getElementById("scene");
+const player = document.getElementById("player");
+const playerImage = player.querySelector("img");
+const objectsContainer = document.getElementById("objects");
 
-const player =
-    document.getElementById("player");
+const startScreen = document.getElementById("startScreen");
+const startButton = document.getElementById("startButton");
 
-const playerImage =
-    player.querySelector("img");
+const jumpButton = document.getElementById("jumpButton");
+const pauseButton = document.getElementById("pauseButton");
+const restartButton = document.getElementById("restartButton");
+const mapButton = document.getElementById("mapButton");
 
-const objectsContainer =
-    document.getElementById("objects");
+const continueButton = document.getElementById("continueButton");
 
-const startScreen =
-    document.getElementById("startScreen");
+const soundButton = document.getElementById("soundButton");
 
-const startButton =
-    document.getElementById("startButton");
+const message = document.getElementById("message");
 
-const jumpButton =
-    document.getElementById("jumpButton");
+const gameOver = document.getElementById("gameOver");
+const gameOverRestart = document.getElementById("gameOverRestart");
 
-const pauseButton =
-    document.getElementById("pauseButton");
+const distanceValue = document.getElementById("distanceValue");
+const scoreValue = document.getElementById("scoreValue");
+const comboValue = document.getElementById("comboValue");
+const livesValue = document.getElementById("livesValue");
+const speedValue = document.getElementById("speedValue");
 
-const restartButton =
-    document.getElementById("restartButton");
+const missionValue = document.getElementById("missionValue");
 
-const mapButton =
-    document.getElementById("mapButton");
+const modakValue = document.getElementById("modakValue");
+const durvaValue = document.getElementById("durvaValue");
+const flowerValue = document.getElementById("flowerValue");
+const diyaValue = document.getElementById("diyaValue");
 
-const continueButton =
-    document.getElementById("continueButton");
-
-const soundButton =
-    document.getElementById("soundButton");
-
-const message =
-    document.getElementById("message");
-
-const gameOver =
-    document.getElementById("gameOver");
-
-const gameOverRestart =
-    document.getElementById("gameOverRestart");
-
-const distanceValue =
-    document.getElementById("distanceValue");
-
-const scoreValue =
-    document.getElementById("scoreValue");
-
-const comboValue =
-    document.getElementById("comboValue");
-
-const livesValue =
-    document.getElementById("livesValue");
-
-const speedValue =
-    document.getElementById("speedValue");
-
-const missionValue =
-    document.getElementById("missionValue");
-
-const modakValue =
-    document.getElementById("modakValue");
-
-const durvaValue =
-    document.getElementById("durvaValue");
-
-const flowerValue =
-    document.getElementById("flowerValue");
-
-const diyaValue =
-    document.getElementById("diyaValue");
-
-const finalScore =
-    document.getElementById("finalScore");
-
-const heartsLost =
-    document.getElementById("heartsLost");
+const finalScore = document.getElementById("finalScore");
+const heartsLost = document.getElementById("heartsLost");
 
 
 /* =========================================================
@@ -95,45 +51,33 @@ const heartsLost =
 ========================================================= */
 
 let gameRunning = false;
-
 let paused = false;
 
 let animationId = null;
-
 let lastTime = 0;
 
 let distance = 0;
-
 let score = 0;
-
 let combo = 1;
-
 let lives = 3;
 
 let speed = 0.52;
 
 let playerY = 0;
-
 let playerVelocity = 0;
-
 let isJumping = false;
 
 let objectId = 0;
 
 let nextSpawnDistance = 180;
-
 let obstacleCount = 0;
 
 let missionProgress = 0;
-
 const missionTarget = 10;
 
 let modaks = 0;
-
 let durvas = 0;
-
 let flowers = 0;
-
 let diyas = 0;
 
 let soundOn = true;
@@ -151,7 +95,7 @@ const objects = [];
 
 
 /* =========================================================
-   COLLECTIBLE TYPES
+   COLLECTIBLES
 ========================================================= */
 
 const collectibleTypes = [
@@ -184,42 +128,39 @@ const collectibleTypes = [
 
 
 /* =========================================================
-   BACKGROUND COLOUR SYSTEM
+   SKY COLOUR SYSTEM
 ========================================================= */
 
 /*
    IMPORTANT:
 
    There is NO overlay.
-   There is NO extra canvas on the screen.
+   There is NO extra element covering the screen.
 
-   The actual background image itself is processed
-   and then placed back into #scene.
+   We process the ORIGINAL background image
+   and put the processed image back as the
+   actual #scene background.
 
    Only blue sky pixels are changed.
 */
 
-let backgroundImage =
-    new Image();
+const backgroundImage = new Image();
 
-let backgroundCanvas =
+const backgroundCanvas =
     document.createElement("canvas");
 
-let backgroundContext =
+const backgroundContext =
     backgroundCanvas.getContext("2d");
 
-let originalBackground =
-    null;
+let originalPixels = null;
 
-let backgroundReady =
-    false;
+let backgroundReady = false;
 
-let currentBackgroundStage =
-    0;
+let currentSkyStage = 0;
 
 
 /*
-   Colour for each 500 m.
+   Colours:
 
    0 = original blue
    1 = pink
@@ -227,7 +168,7 @@ let currentBackgroundStage =
    3 = purple
    4 = orange
    5 = golden
-   6 = rose
+   6 = pink
 */
 
 const skyColours = [
@@ -250,27 +191,31 @@ const skyColours = [
 
 
 /* =========================================================
-   LOAD ORIGINAL BACKGROUND
+   LOAD BACKGROUND
 ========================================================= */
 
 function loadBackground() {
 
-    backgroundImage.onload =
-        function () {
+    backgroundImage.onload = function () {
 
-            backgroundCanvas.width =
-                backgroundImage.naturalWidth;
+        backgroundCanvas.width =
+            backgroundImage.naturalWidth;
 
-            backgroundCanvas.height =
-                backgroundImage.naturalHeight;
+        backgroundCanvas.height =
+            backgroundImage.naturalHeight;
 
 
-            /*
-               Draw the ORIGINAL image.
-            */
+        backgroundContext.drawImage(
+            backgroundImage,
+            0,
+            0,
+            backgroundCanvas.width,
+            backgroundCanvas.height
+        );
 
-            backgroundContext.drawImage(
-                backgroundImage,
+
+        originalPixels =
+            backgroundContext.getImageData(
                 0,
                 0,
                 backgroundCanvas.width,
@@ -278,44 +223,26 @@ function loadBackground() {
             );
 
 
-            /*
-               Save the original pixels.
-            */
-
-            originalBackground =
-                backgroundContext.getImageData(
-                    0,
-                    0,
-                    backgroundCanvas.width,
-                    backgroundCanvas.height
-                );
+        backgroundReady = true;
 
 
-            backgroundReady = true;
+        /*
+           Start with the ORIGINAL image.
+        */
+
+        scene.style.backgroundImage =
+            'url("festival-game-bg.png")';
+
+        currentSkyStage = 0;
+    };
 
 
-            /*
-               Keep the original image
-               until 500 m.
-            */
+    backgroundImage.onerror = function () {
 
-            scene.style.backgroundImage =
-                'url("festival-game-bg.png")';
-
-
-            currentBackgroundStage =
-                0;
-        };
-
-
-    backgroundImage.onerror =
-        function () {
-
-            console.error(
-                "festival-game-bg.png could not be loaded."
-            );
-
-        };
+        console.error(
+            "festival-game-bg.png not found."
+        );
+    };
 
 
     backgroundImage.src =
@@ -324,20 +251,17 @@ function loadBackground() {
 
 
 /* =========================================================
-   CHECK IF PIXEL IS SKY
+   SKY PIXEL TEST
 ========================================================= */
 
-function isSkyPixel(
-    r,
-    g,
-    b
-) {
+function isSkyPixel(r, g, b) {
 
     /*
-       Only blue/cyan colours.
+       Detect blue/cyan pixels only.
 
-       This avoids recolouring
-       brown wall and grey road.
+       Brown wall, grey road,
+       Ganesh and decorations are
+       not selected.
     */
 
     return (
@@ -350,20 +274,16 @@ function isSkyPixel(
 
 
 /* =========================================================
-   CHECK HUD PROTECTION
+   PROTECTED AREAS
 ========================================================= */
 
-function isProtectedArea(
-    x,
-    y
-) {
+function isProtectedArea(x, y) {
 
     const width =
         backgroundCanvas.width;
 
     const height =
         backgroundCanvas.height;
-
 
     const px =
         (x / width) * 100;
@@ -373,7 +293,7 @@ function isProtectedArea(
 
 
     /*
-       Top-left festival title
+       TOP LEFT TITLE
     */
 
     if (
@@ -382,13 +302,12 @@ function isProtectedArea(
         py >= 6 &&
         py <= 17
     ) {
-
         return true;
     }
 
 
     /*
-       Top-right Ganesh title
+       TOP RIGHT TITLE
     */
 
     if (
@@ -397,26 +316,24 @@ function isProtectedArea(
         py >= 6 &&
         py <= 17
     ) {
-
         return true;
     }
 
 
     /*
-       HUD row
+       HUD ROW
     */
 
     if (
         py >= 20 &&
         py <= 32
     ) {
-
         return true;
     }
 
 
     /*
-       Mission panel
+       MISSION PANEL
     */
 
     if (
@@ -425,13 +342,12 @@ function isProtectedArea(
         py >= 31 &&
         py <= 47
     ) {
-
         return true;
     }
 
 
     /*
-       Ganesh Darshan panel
+       GANESH DARSHAN
     */
 
     if (
@@ -440,13 +356,12 @@ function isProtectedArea(
         py >= 32 &&
         py <= 48
     ) {
-
         return true;
     }
 
 
     /*
-       Offerings panel
+       OFFERINGS
     */
 
     if (
@@ -455,7 +370,6 @@ function isProtectedArea(
         py >= 31 &&
         py <= 48
     ) {
-
         return true;
     }
 
@@ -465,36 +379,29 @@ function isProtectedArea(
 
 
 /* =========================================================
-   CREATE COLOURED BACKGROUND
+   CHANGE ONLY SKY
 ========================================================= */
 
-function createColouredBackground(
-    stage
-) {
+function changeSkyColour(stage) {
 
     if (
         !backgroundReady ||
-        !originalBackground
+        !originalPixels
     ) {
-
         return;
     }
 
 
     /*
-       Stage 0:
-       original image only.
+       Stage 0 = original image.
     */
 
-    if (
-        stage === 0
-    ) {
+    if (stage === 0) {
 
         scene.style.backgroundImage =
             'url("festival-game-bg.png")';
 
-        currentBackgroundStage =
-            0;
+        currentSkyStage = 0;
 
         return;
     }
@@ -502,8 +409,7 @@ function createColouredBackground(
 
     const colour =
         skyColours[
-            stage %
-            skyColours.length
+            stage % skyColours.length
         ];
 
 
@@ -512,20 +418,15 @@ function createColouredBackground(
     }
 
 
-    const original =
-        originalBackground.data;
-
-
     /*
-       Make a completely new copy.
+       Start from ORIGINAL pixels every time.
 
-       This prevents colours from
-       stacking on top of each other.
+       This prevents colours from stacking.
     */
 
     const pixels =
         new Uint8ClampedArray(
-            original
+            originalPixels.data
         );
 
 
@@ -538,22 +439,9 @@ function createColouredBackground(
 
     for (
         let y = 0;
-        y < height;
+        y < height * 0.48;
         y++
     ) {
-
-        /*
-           Only upper sky.
-        */
-
-        if (
-            y >
-            height * 0.48
-        ) {
-
-            continue;
-        }
-
 
         for (
             let x = 0;
@@ -562,7 +450,7 @@ function createColouredBackground(
         ) {
 
             /*
-               Protect all HUD areas.
+               Never touch HUD areas.
             */
 
             if (
@@ -571,7 +459,6 @@ function createColouredBackground(
                     y
                 )
             ) {
-
                 continue;
             }
 
@@ -583,17 +470,17 @@ function createColouredBackground(
 
 
             const r =
-                original[index];
+                originalPixels.data[index];
 
             const g =
-                original[index + 1];
+                originalPixels.data[index + 1];
 
             const b =
-                original[index + 2];
+                originalPixels.data[index + 2];
 
 
             /*
-               Only actual blue sky.
+               Only blue sky.
             */
 
             if (
@@ -603,20 +490,18 @@ function createColouredBackground(
                     b
                 )
             ) {
-
                 continue;
             }
 
 
             /*
-               Change the sky colour.
+               Moderate colour blend.
 
-               The original brightness and
-               texture are retained.
+               Sky texture/cloud detail
+               remains visible.
             */
 
-            const amount =
-                0.60;
+            const amount = 0.62;
 
 
             pixels[index] =
@@ -642,11 +527,6 @@ function createColouredBackground(
     }
 
 
-    /*
-       Put the newly coloured image
-       into the OFFSCREEN canvas.
-    */
-
     backgroundContext.putImageData(
         new ImageData(
             pixels,
@@ -661,42 +541,36 @@ function createColouredBackground(
     /*
        IMPORTANT:
 
-       The canvas is NOT added to the page.
+       The canvas is NOT displayed.
 
-       Instead, the actual #scene
-       background is changed to the
-       processed image.
+       The generated image becomes
+       the actual background of #scene.
     */
 
-    const imageURL =
+    const newBackground =
         backgroundCanvas.toDataURL(
             "image/png"
         );
 
 
     scene.style.backgroundImage =
-        `url("${imageURL}")`;
+        `url("${newBackground}")`;
 
 
-    currentBackgroundStage =
-        stage;
+    currentSkyStage = stage;
 }
 
 
 /* =========================================================
-   UPDATE BACKGROUND
+   CHECK 500 METER CHANGE
 ========================================================= */
 
-function updateBackgroundColour() {
+function updateSkyColour() {
 
     if (!backgroundReady) {
         return;
     }
 
-
-    /*
-       EXACTLY every 500 meters.
-    */
 
     const stage =
         Math.floor(
@@ -705,22 +579,18 @@ function updateBackgroundColour() {
 
 
     /*
-       Do nothing until the next
-       500 meter boundary.
+       Change ONLY when crossing
+       500 m, 1000 m, 1500 m, etc.
     */
 
     if (
-        stage ===
-        currentBackgroundStage
+        stage === currentSkyStage
     ) {
-
         return;
     }
 
 
-    createColouredBackground(
-        stage
-    );
+    changeSkyColour(stage);
 }
 
 
@@ -736,73 +606,52 @@ function resetGame() {
 
 
     gameRunning = false;
-
     paused = false;
 
     lastTime = 0;
 
-
     distance = 0;
-
     score = 0;
 
     combo = 1;
-
     lives = 3;
 
     speed = 0.52;
 
-
     playerY = 0;
-
     playerVelocity = 0;
 
     isJumping = false;
 
-
     objectId = 0;
 
     nextSpawnDistance = 180;
-
     obstacleCount = 0;
-
 
     missionProgress = 0;
 
-
     modaks = 0;
-
     durvas = 0;
-
     flowers = 0;
-
     diyas = 0;
-
 
     obstacleCooldown = 0;
 
-
     objects.length = 0;
 
-    objectsContainer.innerHTML =
-        "";
-
+    objectsContainer.innerHTML = "";
 
     player.style.transform =
         "translateY(0px)";
 
-
     continueButton.style.display =
         "none";
-
 
     gameOver.style.display =
         "none";
 
-
     startScreen.style.display =
         "flex";
-
 
     message.classList.remove(
         "show"
@@ -810,14 +659,10 @@ function resetGame() {
 
 
     /*
-       Always return to the
-       original blue background
-       when restarting.
+       Restart = ORIGINAL blue sky.
     */
 
-    currentBackgroundStage =
-        0;
-
+    currentSkyStage = 0;
 
     scene.style.backgroundImage =
         'url("festival-game-bg.png")';
@@ -828,7 +673,7 @@ function resetGame() {
 
 
 /* =========================================================
-   START GAME
+   START
 ========================================================= */
 
 function startGame() {
@@ -837,32 +682,24 @@ function startGame() {
         return;
     }
 
-
     gameRunning = true;
-
     paused = false;
-
 
     startScreen.style.display =
         "none";
 
-
     gameOver.style.display =
         "none";
-
 
     continueButton.style.display =
         "none";
 
-
     lastTime =
         performance.now();
-
 
     showMessage(
         "Ganpati Bappa Morya! 🐘"
     );
-
 
     animationId =
         requestAnimationFrame(
@@ -875,9 +712,7 @@ function startGame() {
    GAME LOOP
 ========================================================= */
 
-function gameLoop(
-    time
-) {
+function gameLoop(time) {
 
     if (!gameRunning) {
         return;
@@ -897,8 +732,7 @@ function gameLoop(
 
     const delta =
         Math.min(
-            (time - lastTime) /
-            16.67,
+            (time - lastTime) / 16.67,
             2
         );
 
@@ -906,23 +740,16 @@ function gameLoop(
     lastTime = time;
 
 
-    updatePlayer(
-        delta
-    );
+    updatePlayer(delta);
 
-
-    updateWorld(
-        delta
-    );
-
+    updateWorld(delta);
 
     /*
-       This only changes the
-       background at 500 m boundaries.
+       ONLY checks distance.
+       Nothing is displayed.
     */
 
-    updateBackgroundColour();
-
+    updateSkyColour();
 
     updateHUD();
 
@@ -935,7 +762,7 @@ function gameLoop(
 
 
 /* =========================================================
-   PLAYER JUMP
+   JUMP
 ========================================================= */
 
 function jump() {
@@ -944,16 +771,13 @@ function jump() {
         return;
     }
 
-
     if (paused) {
         return;
     }
 
-
     if (isJumping) {
         return;
     }
-
 
     isJumping = true;
 
@@ -965,9 +789,7 @@ function jump() {
    PLAYER PHYSICS
 ========================================================= */
 
-function updatePlayer(
-    delta
-) {
+function updatePlayer(delta) {
 
     if (
         !isJumping &&
@@ -975,7 +797,6 @@ function updatePlayer(
     ) {
 
         playerY = 0;
-
         playerVelocity = 0;
 
         player.style.transform =
@@ -1011,12 +832,10 @@ function updatePlayer(
 
 
 /* =========================================================
-   WORLD UPDATE
+   WORLD
 ========================================================= */
 
-function updateWorld(
-    delta
-) {
+function updateWorld(delta) {
 
     distance +=
         speed *
@@ -1036,14 +855,11 @@ function updateWorld(
         delta;
 
 
-    moveObjects(
-        delta
-    );
+    moveObjects(delta);
 
 
     if (
-        distance >=
-        nextSpawnDistance &&
+        distance >= nextSpawnDistance &&
         obstacleCooldown <= 0
     ) {
 
@@ -1058,14 +874,13 @@ function updateWorld(
             );
 
 
-        obstacleCooldown =
-            20;
+        obstacleCooldown = 20;
     }
 }
 
 
 /* =========================================================
-   SPAWN SECTION
+   SPAWN
 ========================================================= */
 
 function spawnSection() {
@@ -1073,8 +888,7 @@ function spawnSection() {
     obstacleCount++;
 
 
-    const baseX =
-        104;
+    const baseX = 104;
 
 
     const collectibleCount =
@@ -1122,8 +936,7 @@ function spawnSection() {
 
     const obstacleX =
         baseX +
-        collectibleCount *
-        7.2 +
+        collectibleCount * 7.2 +
         9;
 
 
@@ -1164,18 +977,14 @@ function createObject(
     element.dataset.type =
         type;
 
-
     element.dataset.value =
         value;
-
 
     element.textContent =
         icon;
 
-
     element.style.left =
         `${x}%`;
-
 
     element.style.bottom =
         `${y}%`;
@@ -1196,14 +1005,10 @@ function createObject(
         value,
 
         collected: false
-
     };
 
 
-    objects.push(
-        object
-    );
-
+    objects.push(object);
 
     objectsContainer.appendChild(
         element
@@ -1215,9 +1020,7 @@ function createObject(
    MOVE OBJECTS
 ========================================================= */
 
-function moveObjects(
-    delta
-) {
+function moveObjects(delta) {
 
     const movement =
         speed *
@@ -1226,8 +1029,7 @@ function moveObjects(
 
 
     for (
-        let i =
-            objects.length - 1;
+        let i = objects.length - 1;
         i >= 0;
         i--
     ) {
@@ -1236,8 +1038,7 @@ function moveObjects(
             objects[i];
 
 
-        object.x -=
-            movement;
+        object.x -= movement;
 
 
         object.element.style.left =
@@ -1246,25 +1047,18 @@ function moveObjects(
 
         if (
             !object.collected &&
-            checkCollision(
-                object
-            )
+            checkCollision(object)
         ) {
 
             if (
-                object.type ===
-                "rock"
+                object.type === "rock"
             ) {
 
-                hitObstacle(
-                    object
-                );
+                hitObstacle(object);
 
             } else {
 
-                collectItem(
-                    object
-                );
+                collectItem(object);
             }
         }
 
@@ -1275,92 +1069,67 @@ function moveObjects(
 
             object.element.remove();
 
-            objects.splice(
-                i,
-                1
-            );
+            objects.splice(i, 1);
         }
     }
 }
 
 
 /* =========================================================
-   COLLISION DETECTION
+   COLLISION
 ========================================================= */
 
-function checkCollision(
-    object
-) {
+function checkCollision(object) {
 
     const playerRect =
         player.getBoundingClientRect();
 
-
     const objectRect =
-        object.element
-            .getBoundingClientRect();
+        object.element.getBoundingClientRect();
 
-
-    const padding =
-        9;
+    const padding = 9;
 
 
     return !(
-        playerRect.right -
-            padding <
+        playerRect.right - padding <
             objectRect.left ||
 
-        playerRect.left +
-            padding >
+        playerRect.left + padding >
             objectRect.right ||
 
-        playerRect.bottom -
-            padding <
+        playerRect.bottom - padding <
             objectRect.top ||
 
-        playerRect.top +
-            padding >
+        playerRect.top + padding >
             objectRect.bottom
     );
 }
 
 
 /* =========================================================
-   OBSTACLE HIT
+   HIT
 ========================================================= */
 
-function hitObstacle(
-    object
-) {
+function hitObstacle(object) {
 
-    object.collected =
-        true;
+    object.collected = true;
 
-
-    object.element.style.opacity =
-        "0";
-
+    object.element.style.opacity = "0";
 
     lives--;
 
     combo = 1;
 
-
-    obstacleCooldown =
-        55;
-
+    obstacleCooldown = 55;
 
     flashHit();
-
 
     showMessage(
         `Ouch! Lives left: ${lives} ❤️`
     );
 
 
-    if (
-        lives <= 0
-    ) {
+    if (lives <= 0) {
 
         endGame();
 
@@ -1373,28 +1142,22 @@ function hitObstacle(
 
 
 /* =========================================================
-   COLLECT ITEM
+   COLLECT
 ========================================================= */
 
-function collectItem(
-    object
-) {
+function collectItem(object) {
 
-    object.collected =
-        true;
-
+    object.collected = true;
 
     object.element.style.transform =
         "scale(1.5)";
-
 
     object.element.style.opacity =
         "0";
 
 
     score +=
-        object.value *
-        combo;
+        object.value * combo;
 
 
     combo =
@@ -1407,38 +1170,19 @@ function collectItem(
     missionProgress++;
 
 
-    if (
-        object.type ===
-        "modak"
-    ) {
-
+    if (object.type === "modak") {
         modaks++;
     }
 
-
-    if (
-        object.type ===
-        "durva"
-    ) {
-
+    if (object.type === "durva") {
         durvas++;
     }
 
-
-    if (
-        object.type ===
-        "flower"
-    ) {
-
+    if (object.type === "flower") {
         flowers++;
     }
 
-
-    if (
-        object.type ===
-        "diya"
-    ) {
-
+    if (object.type === "diya") {
         diyas++;
     }
 
@@ -1475,9 +1219,7 @@ function flashHit() {
         "hitFlash"
     );
 
-
     void scene.offsetWidth;
-
 
     scene.classList.add(
         "hitFlash"
@@ -1506,39 +1248,30 @@ function updateHUD() {
     distanceValue.textContent =
         `${Math.floor(distance)} m`;
 
-
     scoreValue.textContent =
         Math.floor(score);
 
-
     comboValue.textContent =
         `x${combo}`;
-
 
     livesValue.textContent =
         "❤️".repeat(lives) +
         "🖤".repeat(3 - lives);
 
-
     speedValue.textContent =
         `${speed.toFixed(1)}x`;
-
 
     missionValue.textContent =
         `${missionProgress} / ${missionTarget}`;
 
-
     modakValue.textContent =
         modaks;
-
 
     durvaValue.textContent =
         durvas;
 
-
     flowerValue.textContent =
         flowers;
-
 
     diyaValue.textContent =
         diyas;
@@ -1555,22 +1288,16 @@ function pauseGame() {
         return;
     }
 
-
     if (paused) {
         return;
     }
 
-
     paused = true;
-
 
     continueButton.style.display =
         "block";
 
-
-    showMessage(
-        "Game Paused"
-    );
+    showMessage("Game Paused");
 }
 
 
@@ -1584,21 +1311,15 @@ function continueGame() {
         return;
     }
 
-
     paused = false;
-
 
     continueButton.style.display =
         "none";
 
-
     lastTime =
         performance.now();
 
-
-    showMessage(
-        "Run!"
-    );
+    showMessage("Run!");
 }
 
 
@@ -1624,7 +1345,6 @@ function showMap() {
         return;
     }
 
-
     showMessage(
         "Festival Street • Ganesh Darshan →"
     );
@@ -1637,15 +1357,12 @@ function showMap() {
 
 function toggleSound() {
 
-    soundOn =
-        !soundOn;
-
+    soundOn = !soundOn;
 
     soundButton.textContent =
         soundOn
             ? "🔊"
             : "🔇";
-
 
     showMessage(
         soundOn
@@ -1659,22 +1376,13 @@ function toggleSound() {
    MESSAGE
 ========================================================= */
 
-function showMessage(
-    text
-) {
+function showMessage(text) {
 
-    message.textContent =
-        text;
+    message.textContent = text;
 
+    message.classList.add("show");
 
-    message.classList.add(
-        "show"
-    );
-
-
-    clearTimeout(
-        messageTimer
-    );
+    clearTimeout(messageTimer);
 
 
     messageTimer =
@@ -1701,23 +1409,18 @@ function endGame() {
 
     paused = false;
 
-
     cancelAnimationFrame(
         animationId
     );
 
-
     continueButton.style.display =
         "none";
-
 
     finalScore.textContent =
         `Score: ${Math.floor(score)}`;
 
-
     heartsLost.textContent =
         "💔💔💔";
-
 
     gameOver.style.display =
         "flex";
@@ -1725,13 +1428,10 @@ function endGame() {
 
 
 /* =========================================================
-   RANDOM NUMBER
+   RANDOM
 ========================================================= */
 
-function randomBetween(
-    min,
-    max
-) {
+function randomBetween(min, max) {
 
     return (
         Math.random() *
@@ -1787,7 +1487,7 @@ gameOverRestart.addEventListener(
 
 
 /* =========================================================
-   KEYBOARD CONTROLS
+   KEYBOARD
 ========================================================= */
 
 document.addEventListener(
@@ -1832,7 +1532,7 @@ document.addEventListener(
 
 
 /* =========================================================
-   TOUCH CONTROL
+   TOUCH
 ========================================================= */
 
 scene.addEventListener(
@@ -1843,15 +1543,12 @@ scene.addEventListener(
             return;
         }
 
-
         if (paused) {
             return;
         }
 
-
         if (
-            event.target ===
-            scene
+            event.target === scene
         ) {
 
             jump();
@@ -1865,7 +1562,7 @@ scene.addEventListener(
 
 
 /* =========================================================
-   MUSHAK IMAGE CHECK
+   IMAGE CHECK
 ========================================================= */
 
 playerImage.addEventListener(
@@ -1875,7 +1572,6 @@ playerImage.addEventListener(
         showMessage(
             "Mushak image not found"
         );
-
     }
 );
 
