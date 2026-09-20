@@ -29,30 +29,41 @@ body {
     width: 100%;
     aspect-ratio: 1821 / 864;
 
-    background-image: url("festival-game-bg.png");
-    background-size: 100% 100%;
+    /*
+       IMPORTANT:
+       The background image is now drawn by game.js.
+       This prevents a visible colour overlay.
+    */
+    background-color: #2bb8df;
+    background-image: none;
     background-position: center;
+    background-size: 100% 100%;
     background-repeat: no-repeat;
 
     overflow: hidden;
     user-select: none;
     touch-action: manipulation;
+
+    --hit-color: rgba(255, 60, 40, 0.20);
 }
 
 
 /* =====================================================
-   BACKGROUND COLOUR CANVAS
+   BACKGROUND CANVAS
+   This is the actual game background.
+   It is NOT a colour overlay.
 ===================================================== */
 
-#backgroundColourCanvas {
+#backgroundCanvas {
     position: absolute;
 
-    inset: 0;
+    left: 0;
+    top: 0;
 
     width: 100%;
     height: 100%;
 
-    z-index: 5;
+    z-index: 1;
 
     pointer-events: none;
 }
@@ -60,6 +71,7 @@ body {
 
 /* =====================================================
    BACKGROUND COVER
+   Hides the TWO BAKED-IN MUSHAKS.
 ===================================================== */
 
 #scene::before {
@@ -78,14 +90,19 @@ body {
     background:
         linear-gradient(
             to bottom,
+
             #91472a 0%,
             #91472a 70%,
+
             #e5bd38 70%,
             #e5bd38 74%,
+
             #555a61 74%,
             #555a61 100%
         );
 
+    border-radius: 0;
+    box-shadow: none;
     pointer-events: none;
 }
 
@@ -96,11 +113,9 @@ body {
 
 #world {
     position: absolute;
-
     inset: 0;
 
     overflow: hidden;
-
     pointer-events: none;
 
     z-index: 20;
@@ -121,14 +136,12 @@ body {
     height: 13.5%;
 
     display: flex;
-
     align-items: flex-end;
     justify-content: center;
 
     z-index: 30;
 
     will-change: transform;
-
     overflow: visible;
 }
 
@@ -150,11 +163,9 @@ body {
 
 #objects {
     position: absolute;
-
     inset: 0;
 
     overflow: hidden;
-
     pointer-events: none;
 }
 
@@ -162,7 +173,6 @@ body {
     position: absolute;
 
     display: flex;
-
     align-items: center;
     justify-content: center;
 
@@ -228,7 +238,6 @@ body {
     color: #6d2a0b;
 
     font-weight: 1000;
-
     line-height: 1;
 
     text-align: center;
@@ -242,9 +251,7 @@ body {
 }
 
 
-/* =====================================================
-   DISTANCE
-===================================================== */
+/* DISTANCE */
 
 .distanceValue {
     left: 34.8%;
@@ -260,9 +267,7 @@ body {
 }
 
 
-/* =====================================================
-   SCORE
-===================================================== */
+/* SCORE */
 
 .scoreValue {
     left: 47.6%;
@@ -278,9 +283,7 @@ body {
 }
 
 
-/* =====================================================
-   COMBO
-===================================================== */
+/* COMBO */
 
 .comboValue {
     left: 60.9%;
@@ -296,9 +299,7 @@ body {
 }
 
 
-/* =====================================================
-   LIVES
-===================================================== */
+/* LIVES */
 
 .livesValue {
     left: 73.6%;
@@ -316,9 +317,7 @@ body {
 }
 
 
-/* =====================================================
-   SPEED
-===================================================== */
+/* SPEED */
 
 .speedValue {
     left: 86.8%;
@@ -335,7 +334,7 @@ body {
 
 
 /* =====================================================
-   MISSION
+   MISSION NUMBER
 ===================================================== */
 
 #missionValue {
@@ -423,17 +422,14 @@ body {
 
 #startScreen {
     position: absolute;
-
     inset: 0;
 
     z-index: 80;
 
     display: flex;
-
     flex-direction: column;
 
     align-items: center;
-
     justify-content: center;
 
     padding: 0;
@@ -623,7 +619,8 @@ body {
     width: 8.4%;
     height: 8.3%;
 
-    border: 3px solid #9a4b0e;
+    border:
+        3px solid #9a4b0e;
 
     border-radius: 13px;
 
@@ -713,13 +710,11 @@ body {
 
     z-index: 10;
 
-    background:
-        rgba(255, 60, 40, 0.20);
+    background: var(--hit-color);
 
     pointer-events: none;
 
-    animation:
-        skyHitFlash 0.55s ease-out;
+    animation: skyHitFlash 0.55s ease-out;
 }
 
 @keyframes skyHitFlash {
@@ -783,7 +778,6 @@ body {
     display: none;
 
     align-items: center;
-
     justify-content: center;
 
     background:
@@ -877,8 +871,11 @@ body {
 
     #startScreen::before {
         width: 82%;
+
         left: 9%;
+
         height: 42%;
+
         top: 29%;
     }
 
