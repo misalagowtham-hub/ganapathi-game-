@@ -43,8 +43,7 @@ body {
 
 
 /* =====================================================
-   COVER THE TWO BAKED-IN MUSHAKS
-   Brown wall + yellow line + road
+   COVER TWO BAKED-IN MUSHAKS
 ===================================================== */
 
 #scene::before {
@@ -257,13 +256,15 @@ body {
 }
 
 
-/* DISTANCE */
+/* =====================================================
+   DISTANCE
+===================================================== */
 
 .distanceValue {
     left: 34.8%;
     top: 26.8%;
 
-    width: 7.0%;
+    width: 7%;
 
     font-size: clamp(
         11px,
@@ -273,13 +274,15 @@ body {
 }
 
 
-/* SCORE */
+/* =====================================================
+   SCORE
+===================================================== */
 
 .scoreValue {
     left: 47.6%;
     top: 26.8%;
 
-    width: 7.0%;
+    width: 7%;
 
     font-size: clamp(
         11px,
@@ -289,13 +292,15 @@ body {
 }
 
 
-/* COMBO */
+/* =====================================================
+   COMBO
+===================================================== */
 
 .comboValue {
     left: 60.9%;
     top: 26.8%;
 
-    width: 7.0%;
+    width: 7%;
 
     font-size: clamp(
         11px,
@@ -305,7 +310,9 @@ body {
 }
 
 
-/* LIVES */
+/* =====================================================
+   LIVES
+===================================================== */
 
 .livesValue {
     left: 73.6%;
@@ -323,7 +330,9 @@ body {
 }
 
 
-/* SPEED */
+/* =====================================================
+   SPEED
+===================================================== */
 
 .speedValue {
     left: 86.8%;
@@ -349,9 +358,9 @@ body {
     z-index: 40;
 
     left: 24.1%;
-    top: 35.0%;
+    top: 35%;
 
-    width: 7.0%;
+    width: 7%;
 
     height: 5%;
 
@@ -484,6 +493,11 @@ body {
     z-index: -1;
 }
 
+
+/* =====================================================
+   START TITLE
+===================================================== */
+
 .startTitle {
     color: #8a2d08;
 
@@ -506,6 +520,11 @@ body {
     max-width: 90%;
 }
 
+
+/* =====================================================
+   START SUBTITLE
+===================================================== */
+
 .startSubtitle {
     margin-top: 10px;
 
@@ -524,6 +543,11 @@ body {
     text-shadow:
         0 1px 0 white;
 }
+
+
+/* =====================================================
+   PLAY BUTTON
+===================================================== */
 
 #startButton {
     margin-top: 22px;
@@ -566,7 +590,7 @@ body {
 
 
 /* =====================================================
-   BUTTONS
+   BOTTOM BUTTONS
 ===================================================== */
 
 .gameHitButton {
@@ -709,7 +733,8 @@ body {
 
 
 /* =====================================================
-   HIT FLASH
+   COLORFUL BACKGROUND HIT EFFECT
+   ONLY WHEN MUSHAK HITS AN OBSTACLE
 ===================================================== */
 
 #scene.hitFlash::after {
@@ -717,34 +742,42 @@ body {
 
     position: absolute;
 
-    left: 0;
-    right: 0;
-
-    top: 4.5%;
-
-    height: 43%;
+    inset: 0;
 
     z-index: 10;
 
-    background: var(--hit-color);
-
     pointer-events: none;
 
-    animation: skyHitFlash 0.55s ease-out;
+    background: rgba(0, 140, 255, 0.35);
+
+    animation: colorfulHitFlash 1.2s linear;
 }
 
-@keyframes skyHitFlash {
+
+@keyframes colorfulHitFlash {
 
     0% {
-        opacity: 0;
+        background: rgba(0, 140, 255, 0.35);
     }
 
-    25% {
-        opacity: 1;
+    20% {
+        background: rgba(255, 60, 150, 0.35);
+    }
+
+    40% {
+        background: rgba(0, 220, 120, 0.35);
+    }
+
+    60% {
+        background: rgba(170, 70, 255, 0.35);
+    }
+
+    80% {
+        background: rgba(255, 180, 0, 0.35);
     }
 
     100% {
-        opacity: 0;
+        background: rgba(0, 140, 255, 0);
     }
 }
 
