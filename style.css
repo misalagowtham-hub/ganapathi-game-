@@ -41,7 +41,8 @@ body {
 
 
 /* =====================================================
-   SKY COLOUR ONLY
+   SKY COLOUR
+   CHANGES EVERY 500 METERS
 ===================================================== */
 
 #skyColorLayer {
@@ -57,10 +58,12 @@ body {
 
     pointer-events: none;
 
-    background-color: rgba(0, 0, 0, 0);
+    background-color: rgb(20, 170, 235);
+
+    opacity: 0.88;
 
     transition:
-        background-color 1.5s ease;
+        background-color 1.2s ease;
 
     will-change: background-color;
 }
@@ -104,6 +107,7 @@ body {
 
 #world {
     position: absolute;
+
     inset: 0;
 
     overflow: hidden;
@@ -256,7 +260,7 @@ body {
 
 
 /* =====================================================
-   HUD
+   HUD NUMBERS
 ===================================================== */
 
 .liveValue {
@@ -280,9 +284,15 @@ body {
     white-space: nowrap;
 }
 
+
+/* =====================================================
+   DISTANCE
+===================================================== */
+
 .distanceValue {
     left: 34.8%;
     top: 27.0%;
+
     width: 7.0%;
 
     font-size: clamp(
@@ -291,10 +301,16 @@ body {
         19px
     );
 }
+
+
+/* =====================================================
+   SCORE
+===================================================== */
 
 .scoreValue {
     left: 47.6%;
     top: 27.0%;
+
     width: 7.0%;
 
     font-size: clamp(
@@ -303,10 +319,16 @@ body {
         19px
     );
 }
+
+
+/* =====================================================
+   COMBO
+===================================================== */
 
 .comboValue {
     left: 60.9%;
     top: 27.0%;
+
     width: 7.0%;
 
     font-size: clamp(
@@ -316,9 +338,15 @@ body {
     );
 }
 
+
+/* =====================================================
+   LIVES
+===================================================== */
+
 .livesValue {
     left: 73.6%;
     top: 26.7%;
+
     width: 8.5%;
 
     font-size: clamp(
@@ -326,11 +354,19 @@ body {
         0.82vw,
         17px
     );
+
+    letter-spacing: 0;
 }
+
+
+/* =====================================================
+   SPEED
+===================================================== */
 
 .speedValue {
     left: 86.8%;
     top: 27.0%;
+
     width: 7.5%;
 
     font-size: clamp(
@@ -342,7 +378,7 @@ body {
 
 
 /* =====================================================
-   MISSION
+   MISSION NUMBER
 ===================================================== */
 
 #missionValue {
@@ -377,7 +413,7 @@ body {
 
 
 /* =====================================================
-   OFFERINGS
+   OFFERING COUNTERS
 ===================================================== */
 
 .offeringValue {
@@ -430,6 +466,7 @@ body {
 
 #startScreen {
     position: absolute;
+
     inset: 0;
 
     z-index: 80;
@@ -439,6 +476,7 @@ body {
     flex-direction: column;
 
     align-items: center;
+
     justify-content: center;
 
     padding: 0;
@@ -477,6 +515,11 @@ body {
     z-index: -1;
 }
 
+
+/* =====================================================
+   START TITLE
+===================================================== */
+
 .startTitle {
     color: #8a2d08;
 
@@ -499,6 +542,11 @@ body {
     max-width: 90%;
 }
 
+
+/* =====================================================
+   START SUBTITLE
+===================================================== */
+
 .startSubtitle {
     margin-top: 10px;
 
@@ -517,6 +565,11 @@ body {
     text-shadow:
         0 1px 0 white;
 }
+
+
+/* =====================================================
+   PLAY BUTTON
+===================================================== */
 
 #startButton {
     margin-top: 22px;
@@ -559,7 +612,7 @@ body {
 
 
 /* =====================================================
-   BUTTONS
+   BOTTOM BUTTONS
 ===================================================== */
 
 .gameHitButton {
@@ -578,6 +631,9 @@ body {
     touch-action: manipulation;
 }
 
+
+/* JUMP */
+
 #jumpButton {
     left: 31.5%;
     top: 89.3%;
@@ -585,6 +641,9 @@ body {
     width: 8.2%;
     height: 8%;
 }
+
+
+/* PAUSE */
 
 #pauseButton {
     left: 40%;
@@ -594,6 +653,9 @@ body {
     height: 8%;
 }
 
+
+/* RESTART */
+
 #restartButton {
     left: 48.7%;
     top: 89.3%;
@@ -601,6 +663,9 @@ body {
     width: 9.2%;
     height: 8%;
 }
+
+
+/* MAP */
 
 #mapButton {
     left: 58.3%;
@@ -612,7 +677,7 @@ body {
 
 
 /* =====================================================
-   CONTINUE
+   CONTINUE BUTTON
 ===================================================== */
 
 #continueButton {
@@ -701,6 +766,49 @@ body {
 
 
 /* =====================================================
+   HIT FLASH
+===================================================== */
+
+#scene.hitFlash::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+
+    top: 4.5%;
+
+    height: 43%;
+
+    z-index: 10;
+
+    background:
+        rgba(255, 60, 40, 0.20);
+
+    pointer-events: none;
+
+    animation:
+        skyHitFlash 0.55s ease-out;
+}
+
+@keyframes skyHitFlash {
+
+    0% {
+        opacity: 0;
+    }
+
+    25% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+
+/* =====================================================
    SOUND
 ===================================================== */
 
@@ -745,6 +853,7 @@ body {
     display: none;
 
     align-items: center;
+
     justify-content: center;
 
     background:
