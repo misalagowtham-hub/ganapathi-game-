@@ -1,11 +1,5 @@
 /* =========================================================
    MUSHAK: THE FESTIVAL RUN
-   Ganesh Chaturthi Endless Runner
-========================================================= */
-
-
-/* =========================================================
-   ELEMENTS
 ========================================================= */
 
 const scene = document.getElementById("scene");
@@ -22,7 +16,6 @@ const restartButton = document.getElementById("restartButton");
 const mapButton = document.getElementById("mapButton");
 
 const continueButton = document.getElementById("continueButton");
-
 const soundButton = document.getElementById("soundButton");
 
 const message = document.getElementById("message");
@@ -55,14 +48,12 @@ let gameRunning = false;
 let paused = false;
 
 let animationId = null;
-
 let lastTime = 0;
 
 let distance = 0;
 let score = 0;
 
 let combo = 1;
-
 let lives = 3;
 
 let speed = 0.52;
@@ -73,7 +64,6 @@ let playerVelocity = 0;
 let isJumping = false;
 
 let objectId = 0;
-
 let nextSpawnDistance = 180;
 
 let obstacleCount = 0;
@@ -91,11 +81,6 @@ let soundOn = true;
 let messageTimer = null;
 
 let obstacleCooldown = 0;
-
-
-/* =========================================================
-   OBJECT DATA
-========================================================= */
 
 const objects = [];
 
@@ -129,6 +114,44 @@ const collectibleTypes = [
 
 
 /* =========================================================
+   DECORATIVE ROAD FLOWERS
+========================================================= */
+
+function createRoadFlowers() {
+
+    const flowers = [
+        { left: 4.5, bottom: 13.0, icon: "🌸" },
+        { left: 8.5, bottom: 12.5, icon: "🌼" },
+        { left: 28.5, bottom: 13.2, icon: "🌸" },
+        { left: 34.0, bottom: 12.8, icon: "🌼" },
+        { left: 70.5, bottom: 13.0, icon: "🌸" },
+        { left: 76.0, bottom: 12.6, icon: "🌼" },
+        { left: 91.0, bottom: 13.0, icon: "🌸" }
+    ];
+
+    flowers.forEach(item => {
+
+        const flower =
+            document.createElement("div");
+
+        flower.className =
+            "roadFlower";
+
+        flower.textContent =
+            item.icon;
+
+        flower.style.left =
+            `${item.left}%`;
+
+        flower.style.bottom =
+            `${item.bottom}%`;
+
+        scene.appendChild(flower);
+    });
+}
+
+
+/* =========================================================
    RESET GAME
 ========================================================= */
 
@@ -145,7 +168,6 @@ function resetGame() {
     score = 0;
 
     combo = 1;
-
     lives = 3;
 
     speed = 0.52;
@@ -156,7 +178,6 @@ function resetGame() {
     isJumping = false;
 
     objectId = 0;
-
     nextSpawnDistance = 180;
 
     obstacleCount = 0;
@@ -174,22 +195,28 @@ function resetGame() {
 
     objectsContainer.innerHTML = "";
 
-    player.style.transform = "translateY(0px)";
+    player.style.transform =
+        "translateY(0px)";
 
-    continueButton.style.display = "none";
+    continueButton.style.display =
+        "none";
 
-    gameOver.style.display = "none";
+    gameOver.style.display =
+        "none";
 
-    startScreen.style.display = "flex";
+    startScreen.style.display =
+        "flex";
 
-    message.classList.remove("show");
+    message.classList.remove(
+        "show"
+    );
 
     updateHUD();
 }
 
 
 /* =========================================================
-   START GAME
+   START
 ========================================================= */
 
 function startGame() {
@@ -201,17 +228,23 @@ function startGame() {
     gameRunning = true;
     paused = false;
 
-    startScreen.style.display = "none";
+    startScreen.style.display =
+        "none";
 
-    gameOver.style.display = "none";
+    gameOver.style.display =
+        "none";
 
-    continueButton.style.display = "none";
+    continueButton.style.display =
+        "none";
 
     lastTime = performance.now();
 
-    showMessage("Ganpati Bappa Morya! 🐘");
+    showMessage(
+        "Ganpati Bappa Morya! 🐘"
+    );
 
-    animationId = requestAnimationFrame(gameLoop);
+    animationId =
+        requestAnimationFrame(gameLoop);
 }
 
 
@@ -226,29 +259,31 @@ function gameLoop(time) {
     }
 
     if (paused) {
-        animationId = requestAnimationFrame(gameLoop);
+        animationId =
+            requestAnimationFrame(gameLoop);
+
         return;
     }
 
-    const delta = Math.min(
-        (time - lastTime) / 16.67,
-        2
-    );
+    const delta =
+        Math.min(
+            (time - lastTime) / 16.67,
+            2
+        );
 
     lastTime = time;
 
     updatePlayer(delta);
-
     updateWorld(delta);
-
     updateHUD();
 
-    animationId = requestAnimationFrame(gameLoop);
+    animationId =
+        requestAnimationFrame(gameLoop);
 }
 
 
 /* =========================================================
-   PLAYER JUMP
+   JUMP
 ========================================================= */
 
 function jump() {
@@ -277,16 +312,25 @@ function jump() {
 
 function updatePlayer(delta) {
 
-    if (!isJumping && playerY <= 0) {
+    if (
+        !isJumping &&
+        playerY <= 0
+    ) {
+
         playerY = 0;
         playerVelocity = 0;
-        player.style.transform = "translateY(0px)";
+
+        player.style.transform =
+            "translateY(0px)";
+
         return;
     }
 
-    playerVelocity -= 0.72 * delta;
+    playerVelocity -=
+        0.72 * delta;
 
-    playerY += playerVelocity * delta;
+    playerY +=
+        playerVelocity * delta;
 
     if (playerY <= 0) {
 
@@ -303,17 +347,19 @@ function updatePlayer(delta) {
 
 
 /* =========================================================
-   WORLD UPDATE
+   WORLD
 ========================================================= */
 
 function updateWorld(delta) {
 
-    distance += speed * delta * 1.45;
+    distance +=
+        speed * delta * 1.45;
 
-    speed = Math.min(
-        0.95,
-        0.52 + distance / 6500
-    );
+    speed =
+        Math.min(
+            0.95,
+            0.52 + distance / 6500
+        );
 
     obstacleCooldown -= delta;
 
@@ -327,7 +373,8 @@ function updateWorld(delta) {
         spawnSection();
 
         nextSpawnDistance =
-            distance + randomBetween(180, 250);
+            distance +
+            randomBetween(180, 250);
 
         obstacleCooldown = 20;
     }
@@ -336,7 +383,7 @@ function updateWorld(delta) {
 
 /* =========================================================
    SPAWN SECTION
-   5–6 COLLECTIBLES FOR EACH OBSTACLE
+   5–6 COLLECTIBLES + 1 OBSTACLE
 ========================================================= */
 
 function spawnSection() {
@@ -346,9 +393,16 @@ function spawnSection() {
     const baseX = 104;
 
     const collectibleCount =
-        Math.random() < 0.5 ? 5 : 6;
+        Math.random() < 0.5
+            ? 5
+            : 6;
 
-    for (let i = 0; i < collectibleCount; i++) {
+
+    for (
+        let i = 0;
+        i < collectibleCount;
+        i++
+    ) {
 
         const item =
             collectibleTypes[
@@ -377,8 +431,6 @@ function spawnSection() {
         );
     }
 
-
-    /* ONE OBSTACLE */
 
     const obstacleX =
         baseX +
@@ -415,15 +467,20 @@ function createObject(
     element.className =
         `gameObject ${className}`;
 
-    element.dataset.type = type;
+    element.dataset.type =
+        type;
 
-    element.dataset.value = value;
+    element.dataset.value =
+        value;
 
-    element.textContent = icon;
+    element.textContent =
+        icon;
 
-    element.style.left = `${x}%`;
+    element.style.left =
+        `${x}%`;
 
-    element.style.bottom = `${y}%`;
+    element.style.bottom =
+        `${y}%`;
 
     const object = {
 
@@ -440,12 +497,13 @@ function createObject(
         value,
 
         collected: false
-
     };
 
     objects.push(object);
 
-    objectsContainer.appendChild(element);
+    objectsContainer.appendChild(
+        element
+    );
 }
 
 
@@ -464,15 +522,14 @@ function moveObjects(delta) {
         i--
     ) {
 
-        const object = objects[i];
+        const object =
+            objects[i];
 
         object.x -= movement;
 
         object.element.style.left =
             `${object.x}%`;
 
-
-        /* COLLISION */
 
         if (
             !object.collected &&
@@ -492,8 +549,6 @@ function moveObjects(delta) {
         }
 
 
-        /* REMOVE OLD OBJECTS */
-
         if (object.x < -12) {
 
             object.element.remove();
@@ -505,7 +560,7 @@ function moveObjects(delta) {
 
 
 /* =========================================================
-   COLLISION DETECTION
+   COLLISION
 ========================================================= */
 
 function checkCollision(object) {
@@ -516,9 +571,7 @@ function checkCollision(object) {
     const objectRect =
         object.element.getBoundingClientRect();
 
-
     const padding = 9;
-
 
     return !(
         playerRect.right - padding <
@@ -544,7 +597,8 @@ function hitObstacle(object) {
 
     object.collected = true;
 
-    object.element.style.opacity = "0";
+    object.element.style.opacity =
+        "0";
 
     lives--;
 
@@ -583,12 +637,14 @@ function collectItem(object) {
     object.element.style.opacity =
         "0";
 
-    score += object.value * combo;
+    score +=
+        object.value * combo;
 
-    combo = Math.min(
-        combo + 1,
-        9
-    );
+    combo =
+        Math.min(
+            combo + 1,
+            9
+        );
 
     missionProgress++;
 
@@ -716,7 +772,9 @@ function pauseGame() {
     continueButton.style.display =
         "block";
 
-    showMessage("Game Paused");
+    showMessage(
+        "Game Paused"
+    );
 }
 
 
@@ -735,10 +793,12 @@ function continueGame() {
     continueButton.style.display =
         "none";
 
-    lastTime = performance.now();
+    lastTime =
+        performance.now();
 
-    showMessage("Run!");
-
+    showMessage(
+        "Run!"
+    );
 }
 
 
@@ -771,7 +831,7 @@ function showMap() {
 
 
 /* =========================================================
-   SOUND BUTTON
+   SOUND
 ========================================================= */
 
 function toggleSound() {
@@ -779,7 +839,9 @@ function toggleSound() {
     soundOn = !soundOn;
 
     soundButton.textContent =
-        soundOn ? "🔊" : "🔇";
+        soundOn
+            ? "🔊"
+            : "🔇";
 
     showMessage(
         soundOn
@@ -795,19 +857,25 @@ function toggleSound() {
 
 function showMessage(text) {
 
-    message.textContent = text;
+    message.textContent =
+        text;
 
-    message.classList.add("show");
+    message.classList.add(
+        "show"
+    );
 
-    clearTimeout(messageTimer);
+    clearTimeout(
+        messageTimer
+    );
 
-    messageTimer = setTimeout(() => {
+    messageTimer =
+        setTimeout(() => {
 
-        message.classList.remove(
-            "show"
-        );
+            message.classList.remove(
+                "show"
+            );
 
-    }, 1000);
+        }, 1000);
 }
 
 
@@ -843,7 +911,10 @@ function endGame() {
    RANDOM NUMBER
 ========================================================= */
 
-function randomBetween(min, max) {
+function randomBetween(
+    min,
+    max
+) {
 
     return (
         Math.random() *
@@ -899,7 +970,7 @@ gameOverRestart.addEventListener(
 
 
 /* =========================================================
-   KEYBOARD CONTROLS
+   KEYBOARD
 ========================================================= */
 
 document.addEventListener(
@@ -943,7 +1014,7 @@ document.addEventListener(
 
 
 /* =========================================================
-   TOUCH CONTROL
+   TOUCH
 ========================================================= */
 
 scene.addEventListener(
@@ -959,8 +1030,7 @@ scene.addEventListener(
         }
 
         if (
-            event.target ===
-            scene
+            event.target === scene
         ) {
 
             jump();
@@ -973,7 +1043,7 @@ scene.addEventListener(
 
 
 /* =========================================================
-   INITIAL SETUP
+   MUSHAK IMAGE CHECK
 ========================================================= */
 
 playerImage.addEventListener(
@@ -983,8 +1053,14 @@ playerImage.addEventListener(
         showMessage(
             "Mushak image not found"
         );
-
     }
 );
+
+
+/* =========================================================
+   INITIAL SETUP
+========================================================= */
+
+createRoadFlowers();
 
 resetGame();
