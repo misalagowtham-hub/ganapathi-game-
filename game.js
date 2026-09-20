@@ -91,7 +91,7 @@ const heartsLost =
 
 /* =========================================================
    SKY COLOUR LAYER
-   CREATED BY JAVASCRIPT
+   ONLY NEW FEATURE
 ========================================================= */
 
 const skyColorLayer =
@@ -160,18 +160,17 @@ let obstacleCooldown = 0;
 
 
 /* =========================================================
-   OBJECTS
+   OBJECT DATA
 ========================================================= */
 
 const objects = [];
 
 
 /* =========================================================
-   COLLECTIBLES
+   COLLECTIBLE TYPES
 ========================================================= */
 
 const collectibleTypes = [
-
     {
         type: "modak",
         icon: "🍘",
@@ -195,116 +194,65 @@ const collectibleTypes = [
         icon: "🪔",
         value: 12
     }
-
 ];
 
 
 /* =========================================================
-   ROAD FLOWERS
-========================================================= */
-
-function createRoadFlowers() {
-
-    const roadFlowers = [
-
-        [4.5, 13.0, "🌸"],
-        [8.5, 12.5, "🌼"],
-        [28.5, 13.2, "🌸"],
-        [34.0, 12.8, "🌼"],
-        [70.5, 13.0, "🌸"],
-        [76.0, 12.6, "🌼"],
-        [91.0, 13.0, "🌸"]
-
-    ];
-
-
-    roadFlowers.forEach(
-        item => {
-
-            const flower =
-                document.createElement(
-                    "div"
-                );
-
-            flower.className =
-                "roadFlower";
-
-            flower.textContent =
-                item[2];
-
-            flower.style.left =
-                `${item[0]}%`;
-
-            flower.style.bottom =
-                `${item[1]}%`;
-
-            scene.appendChild(
-                flower
-            );
-        }
-    );
-}
-
-
-/* =========================================================
-   DISTANCE SKY COLOUR
+   SKY COLOUR BY DISTANCE
+   ONLY THIS PART CHANGES THE BACKGROUND COLOUR
 ========================================================= */
 
 function updateSkyColor() {
 
-    const stage =
-        Math.floor(
-            distance / 500
-        ) % 5;
+    const colourStage =
+        Math.floor(distance / 500) % 6;
 
 
-    /*
-       0 = BLUE
-       1 = PINK
-       2 = GREEN
-       3 = PURPLE
-       4 = ORANGE
-    */
-
-
-    if (stage === 0) {
+    if (colourStage === 0) {
 
         skyColorLayer.style.backgroundColor =
-            "rgba(0, 120, 255, 0.00)";
+            "rgba(0, 0, 0, 0)";
+
     }
 
-
-    else if (stage === 1) {
+    else if (colourStage === 1) {
 
         skyColorLayer.style.backgroundColor =
-            "rgba(255, 20, 130, 0.55)";
+            "rgba(255, 20, 120, 0.62)";
+
     }
 
-
-    else if (stage === 2) {
+    else if (colourStage === 2) {
 
         skyColorLayer.style.backgroundColor =
-            "rgba(20, 210, 90, 0.55)";
+            "rgba(20, 210, 80, 0.62)";
+
     }
 
-
-    else if (stage === 3) {
+    else if (colourStage === 3) {
 
         skyColorLayer.style.backgroundColor =
-            "rgba(135, 35, 255, 0.58)";
+            "rgba(145, 30, 255, 0.62)";
+
     }
 
-
-    else if (stage === 4) {
+    else if (colourStage === 4) {
 
         skyColorLayer.style.backgroundColor =
-            "rgba(255, 120, 10, 0.55)";
+            "rgba(255, 110, 10, 0.62)";
+
+    }
+
+    else if (colourStage === 5) {
+
+        skyColorLayer.style.backgroundColor =
+            "rgba(0, 190, 180, 0.62)";
     }
 }
 
 
 /* =========================================================
-   RESET
+   RESET GAME
 ========================================================= */
 
 function resetGame() {
@@ -374,10 +322,10 @@ function resetGame() {
     );
 
 
-    /* START WITH BLUE SKY */
+    /* STARTING COLOUR */
 
     skyColorLayer.style.backgroundColor =
-        "rgba(0, 120, 255, 0.00)";
+        "rgba(0, 0, 0, 0)";
 
 
     updateHUD();
@@ -385,7 +333,7 @@ function resetGame() {
 
 
 /* =========================================================
-   START
+   START GAME
 ========================================================= */
 
 function startGame() {
@@ -431,7 +379,6 @@ function gameLoop(time) {
         return;
     }
 
-
     if (paused) {
 
         animationId =
@@ -442,23 +389,19 @@ function gameLoop(time) {
         return;
     }
 
-
     const delta =
         Math.min(
             (time - lastTime) / 16.67,
             2
         );
 
-
     lastTime = time;
-
 
     updatePlayer(delta);
 
     updateWorld(delta);
 
     updateHUD();
-
 
     animationId =
         requestAnimationFrame(
@@ -492,7 +435,7 @@ function jump() {
 
 
 /* =========================================================
-   PLAYER
+   PLAYER PHYSICS
 ========================================================= */
 
 function updatePlayer(delta) {
@@ -512,14 +455,11 @@ function updatePlayer(delta) {
         return;
     }
 
-
     playerVelocity -=
         0.72 * delta;
 
-
     playerY +=
         playerVelocity * delta;
-
 
     if (playerY <= 0) {
 
@@ -530,14 +470,13 @@ function updatePlayer(delta) {
         isJumping = false;
     }
 
-
     player.style.transform =
         `translateY(${-playerY}px)`;
 }
 
 
 /* =========================================================
-   WORLD
+   WORLD UPDATE
 ========================================================= */
 
 function updateWorld(delta) {
@@ -545,25 +484,21 @@ function updateWorld(delta) {
     distance +=
         speed * delta * 1.45;
 
-
     speed =
         Math.min(
             0.95,
             0.52 + distance / 6500
         );
 
-
     obstacleCooldown -=
         delta;
-
 
     moveObjects(delta);
 
 
-    /* ==========================================
-       ONLY NEW CHANGE:
-       SKY COLOUR DEPENDS ON DISTANCE
-    ========================================== */
+    /* =====================================================
+       ONLY BACKGROUND COLOUR CHANGE
+    ===================================================== */
 
     updateSkyColor();
 
@@ -576,7 +511,6 @@ function updateWorld(delta) {
 
         spawnSection();
 
-
         nextSpawnDistance =
             distance +
             randomBetween(
@@ -584,29 +518,25 @@ function updateWorld(delta) {
                 250
             );
 
-
         obstacleCooldown = 20;
     }
 }
 
 
 /* =========================================================
-   SPAWN
+   SPAWN SECTION
 ========================================================= */
 
 function spawnSection() {
 
     obstacleCount++;
 
-
     const baseX = 104;
-
 
     const collectibleCount =
         Math.random() < 0.5
             ? 5
             : 6;
-
 
     for (
         let i = 0;
@@ -622,17 +552,14 @@ function spawnSection() {
                 )
             ];
 
-
         const x =
             baseX +
             i * 7.2 +
             Math.random() * 2;
 
-
         const y =
             18 +
             Math.random() * 7;
-
 
         createObject(
             "collectible",
@@ -644,12 +571,10 @@ function spawnSection() {
         );
     }
 
-
     const obstacleX =
         baseX +
         collectibleCount * 7.2 +
         9;
-
 
     createObject(
         "obstacle",
@@ -676,34 +601,25 @@ function createObject(
 ) {
 
     const element =
-        document.createElement(
-            "div"
-        );
-
+        document.createElement("div");
 
     element.className =
         `gameObject ${className}`;
 
-
     element.dataset.type =
         type;
-
 
     element.dataset.value =
         value;
 
-
     element.textContent =
         icon;
-
 
     element.style.left =
         `${x}%`;
 
-
     element.style.bottom =
         `${y}%`;
-
 
     const object = {
 
@@ -722,11 +638,7 @@ function createObject(
         collected: false
     };
 
-
-    objects.push(
-        object
-    );
-
+    objects.push(object);
 
     objectsContainer.appendChild(
         element
@@ -743,7 +655,6 @@ function moveObjects(delta) {
     const movement =
         speed * delta * 0.75;
 
-
     for (
         let i = objects.length - 1;
         i >= 0;
@@ -753,14 +664,11 @@ function moveObjects(delta) {
         const object =
             objects[i];
 
-
         object.x -=
             movement;
 
-
         object.element.style.left =
             `${object.x}%`;
-
 
         if (
             !object.collected &&
@@ -772,27 +680,19 @@ function moveObjects(delta) {
                 "rock"
             ) {
 
-                hitObstacle(
-                    object
-                );
+                hitObstacle(object);
 
-            }
+            } else {
 
-            else {
-
-                collectItem(
-                    object
-                );
+                collectItem(object);
             }
         }
-
 
         if (
             object.x < -12
         ) {
 
             object.element.remove();
-
 
             objects.splice(
                 i,
@@ -812,14 +712,11 @@ function checkCollision(object) {
     const playerRect =
         player.getBoundingClientRect();
 
-
     const objectRect =
         object.element
             .getBoundingClientRect();
 
-
     const padding = 9;
-
 
     return !(
         playerRect.right - padding <
@@ -854,11 +751,9 @@ function hitObstacle(object) {
 
     obstacleCooldown = 55;
 
-
     showMessage(
         `Ouch! Lives left: ${lives} ❤️`
     );
-
 
     if (
         lives <= 0
@@ -869,13 +764,12 @@ function hitObstacle(object) {
         return;
     }
 
-
     updateHUD();
 }
 
 
 /* =========================================================
-   COLLECT
+   COLLECT ITEM
 ========================================================= */
 
 function collectItem(object) {
@@ -888,17 +782,14 @@ function collectItem(object) {
     object.element.style.opacity =
         "0";
 
-
     score +=
         object.value * combo;
-
 
     combo =
         Math.min(
             combo + 1,
             9
         );
-
 
     missionProgress++;
 
@@ -907,34 +798,27 @@ function collectItem(object) {
         object.type ===
         "modak"
     ) {
-
         modaks++;
     }
-
 
     if (
         object.type ===
         "durva"
     ) {
-
         durvas++;
     }
-
 
     if (
         object.type ===
         "flower"
     ) {
-
         flowers++;
     }
-
 
     if (
         object.type ===
         "diya"
     ) {
-
         diyas++;
     }
 
@@ -948,14 +832,11 @@ function collectItem(object) {
 
         missionProgress = 0;
 
-
         showMessage(
             "Mission complete! +100 🎉"
         );
 
-    }
-
-    else {
+    } else {
 
         showMessage(
             `+${object.value * combo}`
@@ -973,41 +854,30 @@ function updateHUD() {
     distanceValue.textContent =
         `${Math.floor(distance)} m`;
 
-
     scoreValue.textContent =
         Math.floor(score);
-
 
     comboValue.textContent =
         `x${combo}`;
 
-
     livesValue.textContent =
         "❤️".repeat(lives) +
-        "🖤".repeat(
-            3 - lives
-        );
-
+        "🖤".repeat(3 - lives);
 
     speedValue.textContent =
         `${speed.toFixed(1)}x`;
 
-
     missionValue.textContent =
         `${missionProgress} / ${missionTarget}`;
-
 
     modakValue.textContent =
         modaks;
 
-
     durvaValue.textContent =
         durvas;
 
-
     flowerValue.textContent =
         flowers;
-
 
     diyaValue.textContent =
         diyas;
@@ -1028,13 +898,10 @@ function pauseGame() {
         return;
     }
 
-
     paused = true;
-
 
     continueButton.style.display =
         "block";
-
 
     showMessage(
         "Game Paused"
@@ -1052,17 +919,13 @@ function continueGame() {
         return;
     }
 
-
     paused = false;
-
 
     continueButton.style.display =
         "none";
 
-
     lastTime =
         performance.now();
-
 
     showMessage(
         "Run!"
@@ -1092,7 +955,6 @@ function showMap() {
         return;
     }
 
-
     showMessage(
         "Festival Street • Ganesh Darshan →"
     );
@@ -1108,12 +970,10 @@ function toggleSound() {
     soundOn =
         !soundOn;
 
-
     soundButton.textContent =
         soundOn
             ? "🔊"
             : "🔇";
-
 
     showMessage(
         soundOn
@@ -1132,16 +992,13 @@ function showMessage(text) {
     message.textContent =
         text;
 
-
     message.classList.add(
         "show"
     );
 
-
     clearTimeout(
         messageTimer
     );
-
 
     messageTimer =
         setTimeout(
@@ -1167,23 +1024,18 @@ function endGame() {
 
     paused = false;
 
-
     cancelAnimationFrame(
         animationId
     );
 
-
     continueButton.style.display =
         "none";
-
 
     finalScore.textContent =
         `Score: ${Math.floor(score)}`;
 
-
     heartsLost.textContent =
         "💔💔💔";
-
 
     gameOver.style.display =
         "flex";
@@ -1261,22 +1113,17 @@ document.addEventListener(
     (event) => {
 
         if (
-            event.code ===
-                "Space" ||
-            event.code ===
-                "ArrowUp"
+            event.code === "Space" ||
+            event.code === "ArrowUp"
         ) {
 
             event.preventDefault();
-
 
             if (!gameRunning) {
 
                 startGame();
 
-            }
-
-            else {
+            } else {
 
                 jump();
             }
@@ -1284,19 +1131,15 @@ document.addEventListener(
 
 
         if (
-            event.code ===
-                "KeyP" ||
-            event.code ===
-                "Escape"
+            event.code === "KeyP" ||
+            event.code === "Escape"
         ) {
 
             if (!paused) {
 
                 pauseGame();
 
-            }
-
-            else {
+            } else {
 
                 continueGame();
             }
@@ -1317,11 +1160,9 @@ scene.addEventListener(
             return;
         }
 
-
         if (paused) {
             return;
         }
-
 
         if (
             event.target === scene
@@ -1354,7 +1195,5 @@ playerImage.addEventListener(
 /* =========================================================
    INITIAL SETUP
 ========================================================= */
-
-createRoadFlowers();
 
 resetGame();
