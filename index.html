@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ganesh Festival Run</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<main id="game">
+
+    <section id="scene">
+
+        <!-- GAME WORLD -->
+        <div id="world">
+
+            <!-- PLAYABLE MUSHAK -->
+            <div id="player">
+                <img src="assets/mushak-running.png" alt="Mushak">
+            </div>
+
+            <!-- MOVING OBJECTS -->
+            <div id="objects"></div>
+
+        </div>
+
+
+        <!-- LIVE HUD NUMBERS -->
+
+        <div id="distanceValue" class="liveValue distanceValue">
+            0 m
+        </div>
+
+        <div id="scoreValue" class="liveValue scoreValue">
+            0
+        </div>
+
+        <div id="comboValue" class="liveValue comboValue">
+            x1
+        </div>
+
+        <div id="livesValue" class="liveValue livesValue">
+            ❤️❤️❤️
+        </div>
+
+        <div id="speedValue" class="liveValue speedValue">
+            1.0x
+        </div>
+
+
+        <!-- MISSION -->
+
+        <div id="missionCover"></div>
+
+        <div id="missionValue">
+            0 / 10
+        </div>
+
+
+        <!-- OFFERING COUNTERS -->
+
+        <div id="modakValue" class="offeringValue modakValue">
+            0
+        </div>
+
+        <div id="durvaValue" class="offeringValue durvaValue">
+            0
+        </div>
+
+        <div id="flowerValue" class="offeringValue flowerValue">
+            0
+        </div>
+
+        <div id="diyaValue" class="offeringValue diyaValue">
+            0
+        </div>
+
+
+        <!-- START -->
+
+        <div id="startScreen">
+
+            <div class="startTitle">
+                GANESH FESTIVAL RUN
+            </div>
+
+            <div class="startSubtitle">
+                🌸 A Vinayaka Chaturthi Adventure 🌸
+            </div>
+
+            <button id="startButton">
+                TAP TO PLAY
+            </button>
+
+        </div>
+
+
+        <!-- TRANSPARENT BUTTON HIT AREAS -->
+
+        <button
+            id="jumpButton"
+            class="gameHitButton"
+            aria-label="Jump">
+        </button>
+
+        <button
+            id="pauseButton"
+            class="gameHitButton"
+            aria-label="Pause">
+        </button>
+
+        <button
+            id="restartButton"
+            class="gameHitButton"
+            aria-label="Restart">
+        </button>
+
+        <button
+            id="mapButton"
+            class="gameHitButton"
+            aria-label="Map">
+        </button>
+
+
+        <!-- CONTINUE -->
+
+        <button id="continueButton">
+            ▶ CONTINUE
+        </button>
+
+
+        <!-- MESSAGE -->
+
+        <div id="message"></div>
+
+
+        <!-- GAME OVER -->
+
+        <div id="gameOver">
+
+            <div class="gameOverBox">
+
+                <div class="gameOverTitle">
+                    GAME OVER
+                </div>
+
+                <div class="heartsLost">
+                    💔💔💔
+                </div>
+
+                <div class="finalScore">
+                    Score:
+                    <span id="finalScore">0</span>
+                </div>
+
+                <button id="gameOverRestart">
+                    RESTART
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- SOUND -->
+
+        <button id="soundButton">
+            🔊
+        </button>
+
+    </section>
+
+</main>
+
+<script src="game.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,851 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    background: #241208;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#game {
+    width: min(100vw, 1821px);
+    max-height: 100vh;
+}
+
+#scene {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1821 / 864;
+
+    background-image: url("assets/festival-game-bg.png");
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    overflow: hidden;
+    user-select: none;
+    touch-action: manipulation;
+
+    --hit-color: rgba(255, 70, 50, 0.18);
+}
+
+
+/* =====================================================
+   BROWN COVER FOR OLD/BACKGROUND MUSHAK
+   Blends with wall and road
+===================================================== */
+
+#scene::before {
+    content: "";
+
+    position: absolute;
+
+    z-index: 10;
+
+    left: 13.7%;
+    bottom: 14.2%;
+
+    width: 12.8%;
+    height: 17.8%;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #8d4327 0%,
+            #91472a 67%,
+            #81432c 70%,
+            #74777d 73%,
+            #686c73 100%
+        );
+
+    border-radius: 35% 35% 18% 18%;
+
+    box-shadow:
+        inset 0 7px 15px rgba(255,255,255,.035),
+        inset 0 -8px 12px rgba(0,0,0,.08);
+
+    pointer-events: none;
+}
+
+
+/* =====================================================
+   HIT FLASH
+   ONLY BLUE BACKGROUND AREA
+===================================================== */
+
+#scene.hitFlash::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+
+    top: 4.5%;
+    height: 43%;
+
+    z-index: 2;
+
+    background: var(--hit-color);
+
+    pointer-events: none;
+
+    animation: skyHitFlash 0.55s ease-out;
+}
+
+@keyframes skyHitFlash {
+
+    0% {
+        opacity: 0;
+    }
+
+    25% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+
+/* =====================================================
+   WORLD
+===================================================== */
+
+#world {
+    position: absolute;
+    inset: 0;
+
+    overflow: hidden;
+
+    pointer-events: none;
+
+    z-index: 11;
+}
+
+
+/* =====================================================
+   MUSHAK
+===================================================== */
+
+#player {
+    position: absolute;
+
+    left: 15.7%;
+
+    /*
+       Mushak's feet stay naturally on the road.
+    */
+    bottom: 14.8%;
+
+    width: 8.7%;
+    height: 16%;
+
+    z-index: 20;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    will-change: transform;
+}
+
+#player img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+
+    display: block;
+
+    pointer-events: none;
+}
+
+
+/* =====================================================
+   MOVING OBJECTS
+===================================================== */
+
+.gameObject {
+    position: absolute;
+
+    z-index: 18;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    pointer-events: none;
+
+    will-change: left;
+}
+
+
+/* =====================================================
+   OBSTACLES
+===================================================== */
+
+.obstacle {
+    width: 4.5%;
+    height: 6%;
+
+    font-size: clamp(25px, 3vw, 50px);
+
+    filter:
+        drop-shadow(
+            0 3px 4px rgba(0,0,0,.4)
+        );
+}
+
+
+/* =====================================================
+   COLLECTIBLES
+===================================================== */
+
+.collectible {
+    width: 3.5%;
+    height: 7%;
+
+    font-size: clamp(20px, 2.3vw, 43px);
+
+    filter:
+        drop-shadow(
+            0 3px 4px rgba(0,0,0,.35)
+        );
+}
+
+
+/* =====================================================
+   HUD NUMBERS
+===================================================== */
+
+.liveValue {
+    position: absolute;
+
+    z-index: 35;
+
+    color: #6d2a0b;
+
+    font-weight: 1000;
+
+    line-height: 1;
+
+    text-align: center;
+
+    text-shadow:
+        0 1px 0 #fff8df;
+
+    pointer-events: none;
+
+    white-space: nowrap;
+}
+
+
+/* DISTANCE */
+
+.distanceValue {
+    left: 34.5%;
+    top: 22.9%;
+
+    width: 6.8%;
+
+    font-size:
+        clamp(
+            13px,
+            1.25vw,
+            25px
+        );
+}
+
+
+/* SCORE */
+
+.scoreValue {
+    left: 47.4%;
+    top: 22.9%;
+
+    width: 7%;
+
+    font-size:
+        clamp(
+            13px,
+            1.25vw,
+            25px
+        );
+}
+
+
+/* COMBO */
+
+.comboValue {
+    left: 60.8%;
+    top: 22.9%;
+
+    width: 7%;
+
+    font-size:
+        clamp(
+            13px,
+            1.25vw,
+            25px
+        );
+}
+
+
+/* LIVES */
+
+.livesValue {
+    left: 73.7%;
+    top: 22.2%;
+
+    width: 8.3%;
+
+    font-size:
+        clamp(
+            11px,
+            1.05vw,
+            21px
+        );
+
+    letter-spacing: 1px;
+}
+
+
+/* SPEED */
+
+.speedValue {
+    left: 86.9%;
+    top: 22.9%;
+
+    width: 7.5%;
+
+    font-size:
+        clamp(
+            13px,
+            1.25vw,
+            25px
+        );
+}
+
+
+/* =====================================================
+   MISSION
+===================================================== */
+
+#missionCover {
+    position: absolute;
+
+    z-index: 32;
+
+    left: 24.6%;
+    top: 34.0%;
+
+    width: 6.4%;
+    height: 5.2%;
+
+    background:
+        linear-gradient(
+            90deg,
+            #fff8e7,
+            #fff0d2
+        );
+
+    border-radius: 7px;
+
+    pointer-events: none;
+}
+
+#missionValue {
+    position: absolute;
+
+    z-index: 35;
+
+    left: 24.6%;
+    top: 34.25%;
+
+    width: 6.4%;
+
+    color: #d83c0e;
+
+    font-size:
+        clamp(
+            12px,
+            1.15vw,
+            23px
+        );
+
+    font-weight: 1000;
+
+    text-align: center;
+
+    white-space: nowrap;
+
+    pointer-events: none;
+}
+
+
+/* =====================================================
+   OFFERING COUNTERS
+===================================================== */
+
+.offeringValue {
+    position: absolute;
+
+    z-index: 35;
+
+    top: 43.6%;
+
+    width: 3%;
+
+    text-align: center;
+
+    font-size:
+        clamp(
+            10px,
+            1vw,
+            20px
+        );
+
+    font-weight: 1000;
+
+    color: #682a09;
+
+    pointer-events: none;
+}
+
+.modakValue {
+    left: 77.0%;
+}
+
+.durvaValue {
+    left: 83.3%;
+}
+
+.flowerValue {
+    left: 89.6%;
+}
+
+.diyaValue {
+    left: 95.8%;
+}
+
+
+/* =====================================================
+   START SCREEN
+===================================================== */
+
+#startScreen {
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 60;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding-bottom: 7%;
+
+    background:
+        rgba(30,10,0,.15);
+}
+
+.startTitle {
+    color: #fff3bd;
+
+    font-size:
+        clamp(
+            28px,
+            4vw,
+            70px
+        );
+
+    font-weight: 1000;
+
+    letter-spacing: 2px;
+
+    text-align: center;
+
+    text-shadow:
+        0 4px 0 #752607,
+        0 7px 15px rgba(0,0,0,.65);
+}
+
+.startSubtitle {
+    margin-top: 8px;
+
+    color: white;
+
+    font-size:
+        clamp(
+            13px,
+            1.4vw,
+            26px
+        );
+
+    font-weight: 800;
+
+    text-shadow:
+        0 2px 5px black;
+}
+
+#startButton {
+    margin-top: 20px;
+
+    padding: 12px 30px;
+
+    min-width: 210px;
+
+    border: 3px solid #ffd66c;
+
+    border-radius: 16px;
+
+    background:
+        linear-gradient(
+            #fff3a5,
+            #e9a02b
+        );
+
+    color: #682506;
+
+    font-size:
+        clamp(
+            16px,
+            1.6vw,
+            29px
+        );
+
+    font-weight: 1000;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 5px 0 #71300b,
+        0 8px 18px rgba(0,0,0,.4);
+}
+
+#startButton:active {
+    transform: translateY(4px);
+}
+
+
+/* =====================================================
+   BOTTOM BUTTONS
+   TRANSPARENT HIT AREAS
+===================================================== */
+
+.gameHitButton {
+    position: absolute;
+
+    z-index: 45;
+
+    background: transparent;
+
+    border: none;
+
+    padding: 0;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+}
+
+
+/* JUMP */
+
+#jumpButton {
+    left: 31.5%;
+    top: 89.3%;
+
+    width: 8.2%;
+    height: 8%;
+}
+
+
+/* PAUSE */
+
+#pauseButton {
+    left: 40.0%;
+    top: 89.3%;
+
+    width: 8.4%;
+    height: 8%;
+}
+
+
+/* RESTART */
+
+#restartButton {
+    left: 48.7%;
+    top: 89.3%;
+
+    width: 9.2%;
+    height: 8%;
+}
+
+
+/* MAP */
+
+#mapButton {
+    left: 58.3%;
+    top: 89.3%;
+
+    width: 8%;
+    height: 8%;
+}
+
+
+/* =====================================================
+   CONTINUE BUTTON
+===================================================== */
+
+#continueButton {
+    display: none;
+
+    position: absolute;
+
+    z-index: 50;
+
+    left: 40%;
+    top: 89.1%;
+
+    width: 8.4%;
+    height: 8.3%;
+
+    border: 3px solid #9a4b0e;
+
+    border-radius: 13px;
+
+    background:
+        linear-gradient(
+            #fff2ae,
+            #e7a02d
+        );
+
+    color: #662507;
+
+    font-size:
+        clamp(
+            8px,
+            .85vw,
+            17px
+        );
+
+    font-weight: 1000;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 3px 0 #71300b;
+}
+
+
+/* =====================================================
+   MESSAGE
+===================================================== */
+
+#message {
+    position: absolute;
+
+    z-index: 55;
+
+    left: 50%;
+    bottom: 16%;
+
+    transform: translateX(-50%);
+
+    padding: 7px 18px;
+
+    border-radius: 20px;
+
+    background:
+        rgba(73,26,5,.92);
+
+    color: #fff0af;
+
+    font-size:
+        clamp(
+            11px,
+            1.1vw,
+            22px
+        );
+
+    font-weight: 900;
+
+    white-space: nowrap;
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    transition: opacity .2s;
+}
+
+#message.show {
+    opacity: 1;
+}
+
+
+/* =====================================================
+   SOUND
+===================================================== */
+
+#soundButton {
+    position: absolute;
+
+    z-index: 70;
+
+    right: 1.2%;
+    bottom: 1.8%;
+
+    width: 42px;
+    height: 42px;
+
+    border:
+        2px solid #f6c85f;
+
+    border-radius: 50%;
+
+    background:
+        rgba(85,30,5,.9);
+
+    color: white;
+
+    cursor: pointer;
+
+    font-size: 19px;
+}
+
+
+/* =====================================================
+   GAME OVER
+===================================================== */
+
+#gameOver {
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 100;
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    background:
+        rgba(25,5,0,.72);
+}
+
+.gameOverBox {
+    min-width:
+        min(
+            75%,
+            420px
+        );
+
+    padding: 28px;
+
+    text-align: center;
+
+    border:
+        4px solid #ffd269;
+
+    border-radius: 22px;
+
+    background:
+        linear-gradient(
+            #fff2b0,
+            #e6a02e
+        );
+
+    box-shadow:
+        0 12px 30px rgba(0,0,0,.6);
+}
+
+.gameOverTitle {
+    font-size:
+        clamp(
+            34px,
+            4.5vw,
+            65px
+        );
+
+    font-weight: 1000;
+
+    color: #762106;
+}
+
+.heartsLost {
+    margin-top: 8px;
+
+    font-size: 28px;
+}
+
+.finalScore {
+    margin-top: 10px;
+
+    font-size: 23px;
+
+    font-weight: 900;
+
+    color: #592006;
+}
+
+#gameOverRestart {
+    margin-top: 20px;
+
+    padding: 10px 28px;
+
+    border:
+        3px solid #71300b;
+
+    border-radius: 13px;
+
+    background: #fff1ad;
+
+    color: #672507;
+
+    font-size: 18px;
+
+    font-weight: 1000;
+
+    cursor: pointer;
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 700px) {
+
+    .startTitle {
+        font-size: 28px;
+    }
+
+    #soundButton {
+        width: 34px;
+        height: 34px;
+        font-size: 15px;
+    }
+}
