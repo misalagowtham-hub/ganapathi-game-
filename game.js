@@ -2,6 +2,11 @@
    MUSHAK: THE FESTIVAL RUN
 ========================================================= */
 
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
 const scene = document.getElementById("scene");
 const player = document.getElementById("player");
 const playerImage = player.querySelector("img");
@@ -15,29 +20,56 @@ const pauseButton = document.getElementById("pauseButton");
 const restartButton = document.getElementById("restartButton");
 const mapButton = document.getElementById("mapButton");
 
-const continueButton = document.getElementById("continueButton");
-const soundButton = document.getElementById("soundButton");
+const continueButton =
+    document.getElementById("continueButton");
 
-const message = document.getElementById("message");
+const soundButton =
+    document.getElementById("soundButton");
 
-const gameOver = document.getElementById("gameOver");
-const gameOverRestart = document.getElementById("gameOverRestart");
+const message =
+    document.getElementById("message");
 
-const distanceValue = document.getElementById("distanceValue");
-const scoreValue = document.getElementById("scoreValue");
-const comboValue = document.getElementById("comboValue");
-const livesValue = document.getElementById("livesValue");
-const speedValue = document.getElementById("speedValue");
+const gameOver =
+    document.getElementById("gameOver");
 
-const missionValue = document.getElementById("missionValue");
+const gameOverRestart =
+    document.getElementById("gameOverRestart");
 
-const modakValue = document.getElementById("modakValue");
-const durvaValue = document.getElementById("durvaValue");
-const flowerValue = document.getElementById("flowerValue");
-const diyaValue = document.getElementById("diyaValue");
+const distanceValue =
+    document.getElementById("distanceValue");
 
-const finalScore = document.getElementById("finalScore");
-const heartsLost = document.getElementById("heartsLost");
+const scoreValue =
+    document.getElementById("scoreValue");
+
+const comboValue =
+    document.getElementById("comboValue");
+
+const livesValue =
+    document.getElementById("livesValue");
+
+const speedValue =
+    document.getElementById("speedValue");
+
+const missionValue =
+    document.getElementById("missionValue");
+
+const modakValue =
+    document.getElementById("modakValue");
+
+const durvaValue =
+    document.getElementById("durvaValue");
+
+const flowerValue =
+    document.getElementById("flowerValue");
+
+const diyaValue =
+    document.getElementById("diyaValue");
+
+const finalScore =
+    document.getElementById("finalScore");
+
+const heartsLost =
+    document.getElementById("heartsLost");
 
 
 /* =========================================================
@@ -64,11 +96,13 @@ let playerVelocity = 0;
 let isJumping = false;
 
 let objectId = 0;
+
 let nextSpawnDistance = 180;
 
 let obstacleCount = 0;
 
 let missionProgress = 0;
+
 const missionTarget = 10;
 
 let modaks = 0;
@@ -90,26 +124,31 @@ const objects = [];
 ========================================================= */
 
 const collectibleTypes = [
+
     {
         type: "modak",
         icon: "🍘",
         value: 10
     },
+
     {
         type: "durva",
         icon: "🍃",
         value: 8
     },
+
     {
         type: "flower",
         icon: "🌸",
         value: 8
     },
+
     {
         type: "diya",
         icon: "🪔",
         value: 12
     }
+
 ];
 
 
@@ -119,17 +158,54 @@ const collectibleTypes = [
 
 function createRoadFlowers() {
 
-    const flowers = [
-        { left: 4.5, bottom: 13.0, icon: "🌸" },
-        { left: 8.5, bottom: 12.5, icon: "🌼" },
-        { left: 28.5, bottom: 13.2, icon: "🌸" },
-        { left: 34.0, bottom: 12.8, icon: "🌼" },
-        { left: 70.5, bottom: 13.0, icon: "🌸" },
-        { left: 76.0, bottom: 12.6, icon: "🌼" },
-        { left: 91.0, bottom: 13.0, icon: "🌸" }
+    const roadFlowers = [
+
+        {
+            left: 4.5,
+            bottom: 13.0,
+            icon: "🌸"
+        },
+
+        {
+            left: 8.5,
+            bottom: 12.5,
+            icon: "🌼"
+        },
+
+        {
+            left: 28.5,
+            bottom: 13.2,
+            icon: "🌸"
+        },
+
+        {
+            left: 34.0,
+            bottom: 12.8,
+            icon: "🌼"
+        },
+
+        {
+            left: 70.5,
+            bottom: 13.0,
+            icon: "🌸"
+        },
+
+        {
+            left: 76.0,
+            bottom: 12.6,
+            icon: "🌼"
+        },
+
+        {
+            left: 91.0,
+            bottom: 13.0,
+            icon: "🌸"
+        }
+
     ];
 
-    flowers.forEach(item => {
+
+    roadFlowers.forEach(item => {
 
         const flower =
             document.createElement("div");
@@ -147,6 +223,7 @@ function createRoadFlowers() {
             `${item.bottom}%`;
 
         scene.appendChild(flower);
+
     });
 }
 
@@ -157,27 +234,34 @@ function createRoadFlowers() {
 
 function resetGame() {
 
-    cancelAnimationFrame(animationId);
+    cancelAnimationFrame(
+        animationId
+    );
 
     gameRunning = false;
+
     paused = false;
 
     lastTime = 0;
 
     distance = 0;
+
     score = 0;
 
     combo = 1;
+
     lives = 3;
 
     speed = 0.52;
 
     playerY = 0;
+
     playerVelocity = 0;
 
     isJumping = false;
 
     objectId = 0;
+
     nextSpawnDistance = 180;
 
     obstacleCount = 0;
@@ -185,8 +269,11 @@ function resetGame() {
     missionProgress = 0;
 
     modaks = 0;
+
     durvas = 0;
+
     flowers = 0;
+
     diyas = 0;
 
     obstacleCooldown = 0;
@@ -216,7 +303,7 @@ function resetGame() {
 
 
 /* =========================================================
-   START
+   START GAME
 ========================================================= */
 
 function startGame() {
@@ -226,6 +313,7 @@ function startGame() {
     }
 
     gameRunning = true;
+
     paused = false;
 
     startScreen.style.display =
@@ -237,14 +325,17 @@ function startGame() {
     continueButton.style.display =
         "none";
 
-    lastTime = performance.now();
+    lastTime =
+        performance.now();
 
     showMessage(
         "Ganpati Bappa Morya! 🐘"
     );
 
     animationId =
-        requestAnimationFrame(gameLoop);
+        requestAnimationFrame(
+            gameLoop
+        );
 }
 
 
@@ -259,11 +350,15 @@ function gameLoop(time) {
     }
 
     if (paused) {
+
         animationId =
-            requestAnimationFrame(gameLoop);
+            requestAnimationFrame(
+                gameLoop
+            );
 
         return;
     }
+
 
     const delta =
         Math.min(
@@ -271,19 +366,26 @@ function gameLoop(time) {
             2
         );
 
+
     lastTime = time;
 
+
     updatePlayer(delta);
+
     updateWorld(delta);
+
     updateHUD();
 
+
     animationId =
-        requestAnimationFrame(gameLoop);
+        requestAnimationFrame(
+            gameLoop
+        );
 }
 
 
 /* =========================================================
-   JUMP
+   PLAYER JUMP
 ========================================================= */
 
 function jump() {
@@ -318,6 +420,7 @@ function updatePlayer(delta) {
     ) {
 
         playerY = 0;
+
         playerVelocity = 0;
 
         player.style.transform =
@@ -326,11 +429,14 @@ function updatePlayer(delta) {
         return;
     }
 
+
     playerVelocity -=
         0.72 * delta;
 
+
     playerY +=
         playerVelocity * delta;
+
 
     if (playerY <= 0) {
 
@@ -341,13 +447,14 @@ function updatePlayer(delta) {
         isJumping = false;
     }
 
+
     player.style.transform =
         `translateY(${-playerY}px)`;
 }
 
 
 /* =========================================================
-   WORLD
+   WORLD UPDATE
 ========================================================= */
 
 function updateWorld(delta) {
@@ -355,15 +462,19 @@ function updateWorld(delta) {
     distance +=
         speed * delta * 1.45;
 
+
     speed =
         Math.min(
             0.95,
             0.52 + distance / 6500
         );
 
+
     obstacleCooldown -= delta;
 
+
     moveObjects(delta);
+
 
     if (
         distance >= nextSpawnDistance &&
@@ -372,9 +483,14 @@ function updateWorld(delta) {
 
         spawnSection();
 
+
         nextSpawnDistance =
             distance +
-            randomBetween(180, 250);
+            randomBetween(
+                180,
+                250
+            );
+
 
         obstacleCooldown = 20;
     }
@@ -383,14 +499,15 @@ function updateWorld(delta) {
 
 /* =========================================================
    SPAWN SECTION
-   5–6 COLLECTIBLES + 1 OBSTACLE
 ========================================================= */
 
 function spawnSection() {
 
     obstacleCount++;
 
+
     const baseX = 104;
+
 
     const collectibleCount =
         Math.random() < 0.5
@@ -412,14 +529,17 @@ function spawnSection() {
                 )
             ];
 
+
         const x =
             baseX +
             i * 7.2 +
             Math.random() * 2;
 
+
         const y =
             18 +
             Math.random() * 7;
+
 
         createObject(
             "collectible",
@@ -436,6 +556,7 @@ function spawnSection() {
         baseX +
         collectibleCount * 7.2 +
         9;
+
 
     createObject(
         "obstacle",
@@ -464,23 +585,30 @@ function createObject(
     const element =
         document.createElement("div");
 
+
     element.className =
         `gameObject ${className}`;
+
 
     element.dataset.type =
         type;
 
+
     element.dataset.value =
         value;
+
 
     element.textContent =
         icon;
 
+
     element.style.left =
         `${x}%`;
 
+
     element.style.bottom =
         `${y}%`;
+
 
     const object = {
 
@@ -497,9 +625,12 @@ function createObject(
         value,
 
         collected: false
+
     };
 
+
     objects.push(object);
+
 
     objectsContainer.appendChild(
         element
@@ -516,6 +647,7 @@ function moveObjects(delta) {
     const movement =
         speed * delta * 0.75;
 
+
     for (
         let i = objects.length - 1;
         i >= 0;
@@ -525,7 +657,9 @@ function moveObjects(delta) {
         const object =
             objects[i];
 
+
         object.x -= movement;
+
 
         object.element.style.left =
             `${object.x}%`;
@@ -549,18 +683,23 @@ function moveObjects(delta) {
         }
 
 
-        if (object.x < -12) {
+        if (
+            object.x < -12
+        ) {
 
             object.element.remove();
 
-            objects.splice(i, 1);
+            objects.splice(
+                i,
+                1
+            );
         }
     }
 }
 
 
 /* =========================================================
-   COLLISION
+   COLLISION DETECTION
 ========================================================= */
 
 function checkCollision(object) {
@@ -568,10 +707,14 @@ function checkCollision(object) {
     const playerRect =
         player.getBoundingClientRect();
 
+
     const objectRect =
-        object.element.getBoundingClientRect();
+        object.element
+            .getBoundingClientRect();
+
 
     const padding = 9;
+
 
     return !(
         playerRect.right - padding <
@@ -597,20 +740,29 @@ function hitObstacle(object) {
 
     object.collected = true;
 
+
     object.element.style.opacity =
         "0";
 
+
     lives--;
+
 
     combo = 1;
 
+
     obstacleCooldown = 55;
 
+
+    /* COLORFUL BACKGROUND EFFECT */
+
     flashHit();
+
 
     showMessage(
         `Ouch! Lives left: ${lives} ❤️`
     );
+
 
     if (lives <= 0) {
 
@@ -618,6 +770,7 @@ function hitObstacle(object) {
 
         return;
     }
+
 
     updateHUD();
 }
@@ -631,14 +784,18 @@ function collectItem(object) {
 
     object.collected = true;
 
+
     object.element.style.transform =
         "scale(1.5)";
+
 
     object.element.style.opacity =
         "0";
 
+
     score +=
         object.value * combo;
+
 
     combo =
         Math.min(
@@ -646,22 +803,38 @@ function collectItem(object) {
             9
         );
 
+
     missionProgress++;
 
 
-    if (object.type === "modak") {
+    if (
+        object.type === "modak"
+    ) {
+
         modaks++;
     }
 
-    if (object.type === "durva") {
+
+    if (
+        object.type === "durva"
+    ) {
+
         durvas++;
     }
 
-    if (object.type === "flower") {
+
+    if (
+        object.type === "flower"
+    ) {
+
         flowers++;
     }
 
-    if (object.type === "diya") {
+
+    if (
+        object.type === "diya"
+    ) {
+
         diyas++;
     }
 
@@ -689,7 +862,7 @@ function collectItem(object) {
 
 
 /* =========================================================
-   HIT FLASH
+   COLORFUL HIT EFFECT
 ========================================================= */
 
 function flashHit() {
@@ -698,11 +871,18 @@ function flashHit() {
         "hitFlash"
     );
 
+
+    /* Restart CSS animation */
+
     void scene.offsetWidth;
+
 
     scene.classList.add(
         "hitFlash"
     );
+
+
+    /* Remove after animation */
 
     setTimeout(() => {
 
@@ -710,7 +890,7 @@ function flashHit() {
             "hitFlash"
         );
 
-    }, 600);
+    }, 1200);
 }
 
 
@@ -723,30 +903,41 @@ function updateHUD() {
     distanceValue.textContent =
         `${Math.floor(distance)} m`;
 
+
     scoreValue.textContent =
         Math.floor(score);
+
 
     comboValue.textContent =
         `x${combo}`;
 
+
     livesValue.textContent =
         "❤️".repeat(lives) +
-        "🖤".repeat(3 - lives);
+        "🖤".repeat(
+            3 - lives
+        );
+
 
     speedValue.textContent =
         `${speed.toFixed(1)}x`;
 
+
     missionValue.textContent =
         `${missionProgress} / ${missionTarget}`;
+
 
     modakValue.textContent =
         modaks;
 
+
     durvaValue.textContent =
         durvas;
 
+
     flowerValue.textContent =
         flowers;
+
 
     diyaValue.textContent =
         diyas;
@@ -763,14 +954,18 @@ function pauseGame() {
         return;
     }
 
+
     if (paused) {
         return;
     }
 
+
     paused = true;
+
 
     continueButton.style.display =
         "block";
+
 
     showMessage(
         "Game Paused"
@@ -788,13 +983,17 @@ function continueGame() {
         return;
     }
 
+
     paused = false;
+
 
     continueButton.style.display =
         "none";
 
+
     lastTime =
         performance.now();
+
 
     showMessage(
         "Run!"
@@ -824,6 +1023,7 @@ function showMap() {
         return;
     }
 
+
     showMessage(
         "Festival Street • Ganesh Darshan →"
     );
@@ -838,10 +1038,12 @@ function toggleSound() {
 
     soundOn = !soundOn;
 
+
     soundButton.textContent =
         soundOn
             ? "🔊"
             : "🔇";
+
 
     showMessage(
         soundOn
@@ -860,13 +1062,16 @@ function showMessage(text) {
     message.textContent =
         text;
 
+
     message.classList.add(
         "show"
     );
 
+
     clearTimeout(
         messageTimer
     );
+
 
     messageTimer =
         setTimeout(() => {
@@ -889,18 +1094,23 @@ function endGame() {
 
     paused = false;
 
+
     cancelAnimationFrame(
         animationId
     );
 
+
     continueButton.style.display =
         "none";
+
 
     finalScore.textContent =
         `Score: ${Math.floor(score)}`;
 
+
     heartsLost.textContent =
         "💔💔💔";
+
 
     gameOver.style.display =
         "flex";
@@ -933,35 +1143,42 @@ startButton.addEventListener(
     startGame
 );
 
+
 jumpButton.addEventListener(
     "click",
     jump
 );
+
 
 pauseButton.addEventListener(
     "click",
     pauseGame
 );
 
+
 continueButton.addEventListener(
     "click",
     continueGame
 );
+
 
 restartButton.addEventListener(
     "click",
     restartGame
 );
 
+
 mapButton.addEventListener(
     "click",
     showMap
 );
 
+
 soundButton.addEventListener(
     "click",
     toggleSound
 );
+
 
 gameOverRestart.addEventListener(
     "click",
@@ -970,7 +1187,7 @@ gameOverRestart.addEventListener(
 
 
 /* =========================================================
-   KEYBOARD
+   KEYBOARD CONTROLS
 ========================================================= */
 
 document.addEventListener(
@@ -983,6 +1200,7 @@ document.addEventListener(
         ) {
 
             event.preventDefault();
+
 
             if (!gameRunning) {
 
@@ -1009,12 +1227,13 @@ document.addEventListener(
                 continueGame();
             }
         }
+
     }
 );
 
 
 /* =========================================================
-   TOUCH
+   TOUCH CONTROL
 ========================================================= */
 
 scene.addEventListener(
@@ -1025,9 +1244,11 @@ scene.addEventListener(
             return;
         }
 
+
         if (paused) {
             return;
         }
+
 
         if (
             event.target === scene
@@ -1035,6 +1256,7 @@ scene.addEventListener(
 
             jump();
         }
+
     },
     {
         passive: true
@@ -1053,6 +1275,7 @@ playerImage.addEventListener(
         showMessage(
             "Mushak image not found"
         );
+
     }
 );
 
