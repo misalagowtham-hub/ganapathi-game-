@@ -43,6 +43,50 @@ body {
 
 
 /* =====================================================
+   BACKGROUND COVER
+   Hides the TWO BAKED-IN MUSHAKS.
+   Matches wall + yellow road edge + road.
+===================================================== */
+
+#scene::before {
+    content: "";
+
+    position: absolute;
+
+    left: 11.8%;
+    bottom: 14.0%;
+
+    width: 14.8%;
+    height: 18.8%;
+
+    z-index: 15;
+
+    background:
+        linear-gradient(
+            to bottom,
+
+            /* BROWN WALL */
+            #91472a 0%,
+            #91472a 70%,
+
+            /* YELLOW ROAD EDGE */
+            #e5bd38 70%,
+            #e5bd38 74%,
+
+            /* ROAD */
+            #555a61 74%,
+            #555a61 100%
+        );
+
+    border-radius: 0;
+
+    box-shadow: none;
+
+    pointer-events: none;
+}
+
+
+/* =====================================================
    WORLD
 ===================================================== */
 
@@ -60,20 +104,20 @@ body {
 
 /* =====================================================
    MUSHAK
-   Only ONE Mushak is shown.
-   No brown cover.
+   ONE LIVE MUSHAK
 ===================================================== */
 
 #player {
     position: absolute;
 
-    left: 16.4%;
+    left: 16.2%;
     bottom: 14.8%;
 
-    width: 6.4%;
-    height: 12.5%;
+    width: 7.0%;
+    height: 13.5%;
 
     display: flex;
+
     align-items: flex-end;
     justify-content: center;
 
@@ -199,15 +243,15 @@ body {
 ===================================================== */
 
 .distanceValue {
-    left: 35.2%;
-    top: 25.2%;
+    left: 34.8%;
+    top: 27.0%;
 
-    width: 6.2%;
+    width: 7.0%;
 
     font-size: clamp(
-        12px,
-        1.05vw,
-        21px
+        11px,
+        1.0vw,
+        19px
     );
 }
 
@@ -217,15 +261,15 @@ body {
 ===================================================== */
 
 .scoreValue {
-    left: 48.0%;
-    top: 25.2%;
+    left: 47.6%;
+    top: 27.0%;
 
-    width: 6.2%;
+    width: 7.0%;
 
     font-size: clamp(
-        12px,
-        1.05vw,
-        21px
+        11px,
+        1.0vw,
+        19px
     );
 }
 
@@ -235,15 +279,15 @@ body {
 ===================================================== */
 
 .comboValue {
-    left: 61.4%;
-    top: 25.2%;
+    left: 60.9%;
+    top: 27.0%;
 
-    width: 6.2%;
+    width: 7.0%;
 
     font-size: clamp(
-        12px,
-        1.05vw,
-        21px
+        11px,
+        1.0vw,
+        19px
     );
 }
 
@@ -253,15 +297,15 @@ body {
 ===================================================== */
 
 .livesValue {
-    left: 74.3%;
-    top: 24.8%;
+    left: 73.6%;
+    top: 26.7%;
 
-    width: 7.4%;
+    width: 8.5%;
 
     font-size: clamp(
-        10px,
-        0.9vw,
-        18px
+        9px,
+        0.82vw,
+        17px
     );
 
     letter-spacing: 0;
@@ -273,21 +317,21 @@ body {
 ===================================================== */
 
 .speedValue {
-    left: 87.5%;
-    top: 25.2%;
+    left: 86.8%;
+    top: 27.0%;
 
-    width: 6.5%;
+    width: 7.5%;
 
     font-size: clamp(
-        12px,
-        1.05vw,
-        21px
+        11px,
+        1.0vw,
+        19px
     );
 }
 
 
 /* =====================================================
-   MISSION
+   MISSION NUMBER
 ===================================================== */
 
 #missionValue {
@@ -295,17 +339,17 @@ body {
 
     z-index: 40;
 
-    left: 24.8%;
-    top: 36.4%;
+    left: 25.3%;
+    top: 37.0%;
 
-    width: 5.8%;
+    width: 5.2%;
 
     color: #d83c0e;
 
     font-size: clamp(
-        11px,
-        1vw,
-        20px
+        10px,
+        0.9vw,
+        17px
     );
 
     font-weight: 1000;
@@ -330,7 +374,7 @@ body {
 
     z-index: 40;
 
-    top: 43.6%;
+    top: 46.7%;
 
     width: 3%;
 
@@ -338,8 +382,8 @@ body {
 
     font-size: clamp(
         10px,
-        1vw,
-        20px
+        0.9vw,
+        18px
     );
 
     font-weight: 1000;
@@ -371,6 +415,7 @@ body {
 
 /* =====================================================
    START SCREEN
+   FESTIVE BOX
 ===================================================== */
 
 #startScreen {
@@ -388,72 +433,119 @@ body {
 
     justify-content: center;
 
-    padding-bottom: 7%;
+    padding: 0;
 
     background:
-        rgba(25, 8, 0, 0.18);
+        rgba(30, 8, 0, 0.18);
 }
 
+
+/* FESTIVE BOX */
+
+#startScreen::before {
+    content: "";
+
+    position: absolute;
+
+    width: 54%;
+    height: 45%;
+
+    left: 23%;
+    top: 27%;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 248, 204, 0.97),
+            rgba(255, 218, 125, 0.96)
+        );
+
+    border:
+        5px solid #f6b52e;
+
+    border-radius: 28px;
+
+    box-shadow:
+        0 10px 35px rgba(0, 0, 0, 0.55),
+        inset 0 0 0 4px rgba(255, 255, 255, 0.55);
+
+    z-index: -1;
+}
+
+
+/* FESTIVE TITLE */
+
 .startTitle {
-    color: #fff3bd;
+    color: #8a2d08;
 
     font-size: clamp(
-        28px,
-        4vw,
-        70px
+        25px,
+        3.2vw,
+        56px
     );
 
     font-weight: 1000;
 
-    letter-spacing: 2px;
+    letter-spacing: 1px;
 
     text-align: center;
 
     text-shadow:
-        0 4px 0 #752607,
-        0 7px 15px rgba(0, 0, 0, 0.65);
+        0 2px 0 #fff5c8,
+        0 4px 8px rgba(0, 0, 0, 0.25);
+
+    max-width: 90%;
 }
 
-.startSubtitle {
-    margin-top: 8px;
 
-    color: white;
+/* FESTIVE SUBTITLE */
+
+.startSubtitle {
+    margin-top: 10px;
+
+    color: #6d2a0b;
 
     font-size: clamp(
         13px,
-        1.4vw,
-        26px
+        1.35vw,
+        25px
     );
 
-    font-weight: 800;
+    font-weight: 900;
+
+    text-align: center;
 
     text-shadow:
-        0 2px 5px black;
+        0 1px 0 white;
 }
 
+
+/* PLAY BUTTON */
+
 #startButton {
-    margin-top: 20px;
+    margin-top: 22px;
 
-    padding: 12px 30px;
+    padding: 13px 34px;
 
-    min-width: 210px;
+    min-width: 220px;
 
-    border: 3px solid #ffd66c;
+    border:
+        3px solid #9b4a0b;
 
-    border-radius: 16px;
+    border-radius: 17px;
 
     background:
         linear-gradient(
-            #fff3a5,
-            #e9a02b
+            #fff5b5,
+            #eda62d
         );
 
     color: #682506;
 
     font-size: clamp(
         16px,
-        1.6vw,
-        29px
+        1.5vw,
+        27px
     );
 
     font-weight: 1000;
@@ -462,7 +554,7 @@ body {
 
     box-shadow:
         0 5px 0 #71300b,
-        0 8px 18px rgba(0, 0, 0, 0.4);
+        0 8px 18px rgba(0, 0, 0, 0.35);
 }
 
 #startButton:active {
@@ -552,7 +644,8 @@ body {
     width: 8.4%;
     height: 8.3%;
 
-    border: 3px solid #9a4b0e;
+    border:
+        3px solid #9a4b0e;
 
     border-radius: 13px;
 
@@ -681,7 +774,8 @@ body {
     width: 42px;
     height: 42px;
 
-    border: 2px solid #f6c85f;
+    border:
+        2px solid #f6c85f;
 
     border-radius: 50%;
 
@@ -727,7 +821,8 @@ body {
 
     text-align: center;
 
-    border: 4px solid #ffd269;
+    border:
+        4px solid #ffd269;
 
     border-radius: 22px;
 
@@ -774,7 +869,8 @@ body {
 
     padding: 10px 28px;
 
-    border: 3px solid #71300b;
+    border:
+        3px solid #71300b;
 
     border-radius: 13px;
 
@@ -797,7 +893,14 @@ body {
 @media (max-width: 700px) {
 
     .startTitle {
-        font-size: 28px;
+        font-size: 25px;
+    }
+
+    #startScreen::before {
+        width: 82%;
+        left: 9%;
+        height: 42%;
+        top: 29%;
     }
 
     #soundButton {
